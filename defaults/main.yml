@@ -1,0 +1,12 @@
+---
+useful_packages:
+  - apt-transport-https
+  - git
+  - htop
+  - tcpdump
+  - rsync
+  - vim
+  - intel-microcode
+
+debian_mirror: "http://deb.debian.org/debian/"
+ubuntu_mirror: "http://archive.ubuntu.com/ubuntu/"

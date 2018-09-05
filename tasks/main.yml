@@ -1,0 +1,29 @@
+---
+- name: Set hostname
+  hostname:
+    name: "{{ inventory_hostname }}"
+  when: not inventory_hostname is match('(\d{1,3}\.){3}\d{1,3}')
+
+- name: Set hostname in /etc/hosts
+  lineinfile:
+    dest: /etc/hosts
+    regexp: "^127.0.1.1.+$"
+    line: "127.0.1.1	{{ ansible_fqdn }} {{ ansible_hostname }}"
+
+- name: Configure apt mirror
+  template:
+    src: "templates/sources.list.{{ ansible_distribution|lower }}"
+    dest: /etc/apt/sources.list
+  when: ansible_os_family == "Debian"
+  register: apt_mirror
+
+- name: Refresh apt cache
+  apt:
+    update_cache: yes
+  when: apt_mirror.changed == true
+
+- name: Install useful packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ useful_packages }}"
