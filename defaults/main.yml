@@ -1,6 +1,5 @@
 ---
 useful_packages:
-  - apt-transport-https
   - git
   - htop
   - tcpdump

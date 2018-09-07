@@ -10,6 +10,13 @@
     regexp: "^127.0.1.1.+$"
     line: "127.0.1.1	{{ ansible_fqdn }} {{ ansible_hostname }}"
 
+- name: Install apt mirror dependencies
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - apt-transport-https
+
 - name: Configure apt mirror
   template:
     src: "templates/sources.list.{{ ansible_distribution|lower }}"
