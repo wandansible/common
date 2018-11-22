@@ -12,10 +12,9 @@
 
 - name: Install apt mirror dependencies
   apt:
-    name: "{{ item }}"
+    pkg:
+      - apt-transport-https
     state: present
-  with_items:
-    - apt-transport-https
 
 - name: Configure apt mirror
   template:
@@ -31,6 +30,5 @@
 
 - name: Install useful packages
   apt:
-    name: "{{ item }}"
+    pkg: "{{ useful_packages }}"
     state: present
-  with_items: "{{ useful_packages }}"
