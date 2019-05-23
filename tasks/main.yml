@@ -32,3 +32,19 @@
   apt:
     pkg: "{{ useful_packages }}"
     state: present
+
+- name: Install intel microcode
+  apt:
+    pkg: "intel-microcode"
+  when: ansible_processor | lower is search("intel")
+
+- name: Install amd64 microcode
+  apt:
+    pkg: "amd64-microcode"
+  when: ansible_processor | lower is search("amd")
+
+- name: Install nonfree firmware
+  apt:
+    pkg: "firmware-linux-nonfree"
+    install_recommends: no
+  when: ansible_system_vendor | lower is search("dell")
