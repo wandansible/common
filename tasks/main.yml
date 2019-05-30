@@ -10,6 +10,10 @@
     regexp: "^127.0.1.1.+$"
     line: "127.0.1.1	{{ ansible_fqdn }} {{ ansible_hostname }}"
 
+- name: Refresh apt cache
+  apt:
+    update_cache: yes
+
 - name: Install apt mirror dependencies
   apt:
     pkg:
@@ -23,7 +27,7 @@
   when: ansible_os_family == "Debian"
   register: apt_mirror
 
-- name: Refresh apt cache
+- name: Refresh apt cache when mirror changes
   apt:
     update_cache: yes
   when: apt_mirror.changed == true
