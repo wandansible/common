@@ -52,3 +52,8 @@
     pkg: "firmware-linux-nonfree"
     install_recommends: no
   when: ansible_system_vendor | lower is search("dell")
+
+- name: Install LTS enablement stack on ubuntu
+  apt:
+    pkg: "linux-generic-hwe-{{ ansible_distribution_version }}"
+  when: ansible_distribution == "Ubuntu"
