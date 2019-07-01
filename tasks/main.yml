@@ -32,6 +32,11 @@
     update_cache: yes
   when: apt_mirror.changed == true
 
+- name: Install needrestart
+  apt:
+    pkg: needrestart
+    state: present
+
 - name: Install useful packages
   apt:
     pkg: "{{ useful_packages }}"
