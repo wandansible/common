@@ -42,15 +42,19 @@
     pkg: "{{ useful_packages }}"
     state: present
 
-- name: Install intel microcode
+- name: Install intel microcode on physical hosts
   apt:
     pkg: "intel-microcode"
-  when: ansible_processor | lower is search("intel")
+  when:
+    - "ansible_virtualization_role == 'host'"
+    - "ansible_processor | lower is search('intel')"
 
-- name: Install amd64 microcode
+- name: Install amd64 microcode on physical hosts
   apt:
     pkg: "amd64-microcode"
-  when: ansible_processor | lower is search("amd")
+  when:
+    - "ansible_virtualization_role == 'host'"
+    - "ansible_processor | lower is search('amd')"
 
 - name: Install nonfree firmware
   apt:
