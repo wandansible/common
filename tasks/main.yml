@@ -13,6 +13,7 @@
 - name: Refresh apt cache
   apt:
     update_cache: yes
+  changed_when: false
 
 - name: Install apt mirror dependencies
   apt:
