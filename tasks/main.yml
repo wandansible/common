@@ -33,10 +33,27 @@
     update_cache: yes
   when: apt_mirror.changed == true
 
+- name: Enable backports repo on Debian machines
+  apt_repository:
+    filename: "debian-backports"
+    repo: "deb {{ debian_mirror }} {{ debian_backports_components }}"
+    update_cache: yes
+    state: present
+  when: ansible_distribution == "Debian"
+
 - name: Install needrestart
   apt:
     pkg: needrestart
     state: present
+
+- name: Install needrestart from backports on Debian Stretch
+  apt:
+    pkg: needrestart
+    default_release: "{{ansible_distribution_release}}-backports"
+    state: latest
+  when:
+    - ansible_distribution == "Debian"
+    - ansible_distribution_release == "stretch"
 
 - name: Install useful packages
   apt:

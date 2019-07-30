@@ -9,6 +9,7 @@ useful_packages:
 
 debian_mirror: "http://deb.debian.org/debian/"
 ubuntu_mirror: "http://archive.ubuntu.com/ubuntu/"
+debian_backports_components: "{{ ansible_distribution_release }}-backports main contrib non-free"
 
 scratch_dir: "/scratch"
 scratch_backend_location: ""
