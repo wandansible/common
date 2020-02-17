@@ -78,7 +78,9 @@
   apt:
     pkg: "firmware-linux-nonfree"
     install_recommends: no
-  when: ansible_system_vendor | lower is search("dell")
+  when:
+    - ansible_system_vendor | lower is search("dell")
+    - ansible_distribution == "Debian"
 
 - name: Install LTS enablement stack on ubuntu
   apt:
