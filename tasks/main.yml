@@ -15,11 +15,12 @@
     update_cache: yes
   changed_when: false
 
-- name: Install apt mirror dependencies
+- name: Install https support for apt
   apt:
     pkg:
       - apt-transport-https
     state: present
+  when: not (ansible_distribution == "Debian" and ansible_distribution_version is version('10', '>='))
 
 - name: Configure apt mirror
   template:
