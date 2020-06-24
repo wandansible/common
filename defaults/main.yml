@@ -1,4 +1,5 @@
 ---
+useful_repos: []
 useful_packages:
   - git
   - htop
@@ -13,3 +14,5 @@ debian_backports_components: "{{ ansible_distribution_release }}-backports main 
 
 scratch_dir: "/scratch"
 scratch_backend_location: ""
+
+storage_mounts: []
