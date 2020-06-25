@@ -16,3 +16,6 @@ scratch_dir: "/scratch"
 scratch_backend_location: ""
 
 storage_mounts: []
+
+grub_cmdline: []
+
