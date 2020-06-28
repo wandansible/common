@@ -136,6 +136,13 @@
     pkg: "linux-generic-hwe-{{ ansible_distribution_version }}"
   when: ansible_distribution == "Ubuntu"
 
+- name: Disable motd news on ubuntu
+  lineinfile:
+    dest: /etc/default/motd-news
+    regexp: '^ENABLED=1$'
+    line: 'ENABLED=0'
+  when: ansible_distribution == "Ubuntu"
+
 - name: Add backend storage directory for /scratch
   file:
     path: "{{ scratch_backend_location }}"
