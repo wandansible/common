@@ -1,12 +1,11 @@
 ---
 useful_repos: []
-useful_packages:
-  - git
-  - htop
-  - tcpdump
-  - rsync
-  - vim
-  - intel-microcode
+useful_packages: []
+
+packages_install: []
+packages_upgrade: []
+packages_remove: []
+packages_purge: []
 
 debian_mirror: "http://deb.debian.org/debian/"
 ubuntu_mirror: "http://archive.ubuntu.com/ubuntu/"
@@ -18,4 +17,3 @@ scratch_backend_location: ""
 storage_mounts: []
 
 grub_cmdline: []
-
