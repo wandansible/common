@@ -1,0 +1,11 @@
+---
+
+- name: Install LTS enablement stack on ubuntu
+  apt:
+    pkg: "linux-generic-hwe-{{ ansible_distribution_version }}"
+
+- name: Disable motd news on ubuntu
+  lineinfile:
+    dest: /etc/default/motd-news
+    regexp: '^ENABLED=1$'
+    line: 'ENABLED=0'
