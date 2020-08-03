@@ -19,3 +19,9 @@
     pkg: "firmware-linux-nonfree"
     install_recommends: no
   when: ansible_system_vendor | lower is search("dell")
+
+- name: Install nonfree realtek firmware on debian machines with a realtek NIC
+  apt:
+    pkg: "firmware-realtek"
+    install_recommends: no
+  when: "realtek_kmods | intersect(loaded_network_kmods) | length > 0"

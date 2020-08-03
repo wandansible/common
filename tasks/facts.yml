@@ -1,0 +1,8 @@
+---
+
+- name: Get list of loaded networking kernel modules
+  set_fact:
+    loaded_network_kmods: "{% set loaded_network_kmods = loaded_network_kmods | default([]) + [hostvars[inventory_hostname]['ansible_%s' | format(item)]['module']] %}{{ loaded_network_kmods | list }}"
+  when: hostvars[inventory_hostname]['ansible_%s' | format(item)]['module'] is defined
+  with_items:
+    - "{{ ansible_interfaces }}"

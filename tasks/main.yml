@@ -1,5 +1,6 @@
 ---
 
+- import_tasks: facts.yml
 - import_tasks: dns.yml
 - import_tasks: apt.yml
 - import_tasks: ubuntu.yml
