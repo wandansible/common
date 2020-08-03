@@ -17,3 +17,6 @@ scratch_backend_location: ""
 storage_mounts: []
 
 grub_cmdline: []
+
+realtek_kmods:
+  - "r8169"
