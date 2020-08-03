@@ -47,14 +47,14 @@
     pkg: needrestart
     state: present
 
-- name: Install intel microcode on physical hosts
+- name: Install intel microcode on physical hosts with an Intel CPU
   apt:
     pkg: "intel-microcode"
   when:
     - "ansible_virtualization_role == 'host'"
     - "ansible_processor | lower is search('intel')"
 
-- name: Install amd64 microcode on physical hosts
+- name: Install amd64 microcode on physical hosts with an AMD CPU
   apt:
     pkg: "amd64-microcode"
   when:

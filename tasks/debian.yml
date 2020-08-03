@@ -14,7 +14,7 @@
     state: latest
   when: ansible_distribution_release == "stretch"
 
-- name: Install nonfree firmware on debian
+- name: Install nonfree firmware on debian machines with dell hardware
   apt:
     pkg: "firmware-linux-nonfree"
     install_recommends: no
