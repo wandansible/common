@@ -18,5 +18,8 @@ storage_mounts: []
 
 grub_cmdline: []
 
-realtek_kmods:
-  - "r8169"
+nonfree_network_firmware:
+  - module: "r8169"
+    package: "firmware-realtek"
+  - module: "bnx2"
+    package: "firmware-bnx2"
