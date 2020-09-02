@@ -8,3 +8,18 @@
     line: 'GRUB_CMDLINE_LINUX_DEFAULT="\1 {{ item }}"'
   with_items: "{{ grub_cmdline }}"
   notify: update-grub
+
+- name: Set grub serial console
+  lineinfile:
+    dest: /etc/default/grub
+    regexp: '{{ item.regexp }}'
+    line: '{{ item.line }}'
+  loop:
+    - regexp: '^GRUB_TERMINAL='
+      line: 'GRUB_TERMINAL=serial'
+    - regexp: '^GRUB_SERIAL_COMMAND='
+      line: 'GRUB_SERIAL_COMMAND="{{ grub_serial_console }}"'
+  loop_control:
+    label: "{{ item.line }}"
+  when: grub_serial_console | length >= 1
+  notify: update-grub

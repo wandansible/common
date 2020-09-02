@@ -32,6 +32,10 @@ storage_mounts: []
 
 grub_cmdline: []
 
+# String containing serial options to pass to grub:
+# <https://www.gnu.org/software/grub/manual/grub/grub.html#serial>
+grub_serial_console: ""
+
 nonfree_network_firmware:
   - module: "r8169"
     package: "firmware-realtek"
