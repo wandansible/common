@@ -12,15 +12,6 @@
     value: '1'
     sysctl_file: /etc/sysctl.d/kernel.panic_on_oops.conf
 
-- name: Set linux cmdline default options
-  lineinfile:
-    dest: /etc/default/grub
-    backrefs: yes
-    regexp: '^GRUB_CMDLINE_LINUX_DEFAULT="((?!.*{{ item }}.*).*)"$'
-    line: 'GRUB_CMDLINE_LINUX_DEFAULT="\1 {{ item }}"'
-  with_items: "{{ grub_cmdline }}"
-  notify: update-grub
-
 - name: Configure kernel modules to load
   template:
     src: "modprobe/modules-load.conf"

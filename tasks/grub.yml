@@ -1,0 +1,10 @@
+---
+
+- name: Set linux cmdline default options
+  lineinfile:
+    dest: /etc/default/grub
+    backrefs: yes
+    regexp: '^GRUB_CMDLINE_LINUX_DEFAULT="((?!.*{{ item }}.*).*)"$'
+    line: 'GRUB_CMDLINE_LINUX_DEFAULT="\1 {{ item }}"'
+  with_items: "{{ grub_cmdline }}"
+  notify: update-grub
