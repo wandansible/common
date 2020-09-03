@@ -9,3 +9,4 @@
   when: ansible_distribution == "Debian"
 - import_tasks: storage.yml
 - import_tasks: kernel.yml
+- import_tasks: grub.yml

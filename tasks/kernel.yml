@@ -12,11 +12,42 @@
     value: '1'
     sysctl_file: /etc/sysctl.d/kernel.panic_on_oops.conf
 
-- name: Set linux cmdline default options
-  lineinfile:
-    dest: /etc/default/grub
-    backrefs: yes
-    regexp: '^GRUB_CMDLINE_LINUX_DEFAULT="((?!.*{{ item }}.*).*)"$'
-    line: 'GRUB_CMDLINE_LINUX_DEFAULT="\1 {{ item }}"'
-  with_items: "{{ grub_cmdline }}"
-  notify: update-grub
+- name: Configure kernel modules to load
+  template:
+    src: "modprobe/modules-load.conf"
+    dest: "{{ modprobe_modules_load_file }}"
+    mode: "u=rw,g=r,o=r"
+  when: "modprobe_modules | selectattr('state', 'equalto', 'loaded') | list | length >= 1"
+  notify: restart systemd-modules-load
+
+- name: Unload blacklisted kernel modules
+  modprobe:
+    name: "{{ item.name }}"
+    state: "absent"
+  loop: "{{ modprobe_modules | selectattr('state', 'equalto', 'blacklisted') | list }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: Blacklist kernel modules
+  template:
+    src: "modprobe/modprobe-blacklist.conf"
+    dest: "{{ modprobe_blacklist_config_file }}"
+    mode: "u=rw,g=r,o=r"
+  when:
+    - modprobe_modules | selectattr('state', 'equalto', 'blacklisted') | list | length >= 1
+  notify:
+    - update-initramfs
+
+- name: Configure kernel module options
+  template:
+    src: "modprobe/modprobe-options.conf"
+    dest: "{{ modprobe_options_config_file }}"
+    mode: "u=rw,g=r,o=r"
+  when: >
+    modprobe_modules |
+      selectattr('state', 'equalto', 'loaded') |
+      selectattr('options', 'defined') |
+      list | length >= 1
+  notify:
+   - update-initramfs
+   - restart systemd-modules-load
