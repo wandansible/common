@@ -45,3 +45,8 @@ nic_packages:
     package: "firmware-bnx2"
     distributions:
       - debian
+  - module: "mlx5_core"
+    package: "mstflint"
+    distributions:
+      - debian
+      - ubuntu
