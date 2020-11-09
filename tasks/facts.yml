@@ -1,8 +1,10 @@
 ---
 
-- name: Get list of loaded networking kernel modules
+- name: Get list of loaded NIC kernel modules
   set_fact:
-    loaded_network_kmods: "{% set loaded_network_kmods = loaded_network_kmods | default([]) + [hostvars[inventory_hostname]['ansible_%s' | format(item)]['module']] %}{{ loaded_network_kmods | list }}"
-  when: hostvars[inventory_hostname]['ansible_%s' | format(item)]['module'] is defined
-  with_items:
-    - "{{ ansible_interfaces }}"
+    loaded_nic_kmods: "{% set loaded_nic_kmods = loaded_nic_kmods | default([]) + [hostvars[inventory_hostname][item]['module']] %}{{ loaded_nic_kmods | list }}"
+  when:
+    - "hostvars[inventory_hostname][item]['module'] is defined"
+  loop: "{{ ansible_interfaces | map('regex_replace', '^', 'ansible_') | map('regex_replace', '-', '_') | list }}"
+  loop_control:
+    label: '{{ item + "[''module'']" }}'

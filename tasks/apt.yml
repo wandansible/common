@@ -61,6 +61,17 @@
     - "ansible_virtualization_role == 'host'"
     - "ansible_processor | lower is search('amd')"
 
+- name: Install NIC specific packages when required
+  apt:
+    pkg: "{{ item.package }}"
+    install_recommends: no
+  when:
+    - "item.module in loaded_nic_kmods"
+    - "ansible_distribution | lower in item.distributions"
+  loop: "{{ nic_packages }}"
+  loop_control:
+    label: "{{ item.module }}"
+
 - name: Add keys for useful repos
   apt_key:
     url: "{{ item.key.url }}"

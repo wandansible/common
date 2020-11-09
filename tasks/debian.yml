@@ -19,10 +19,3 @@
     pkg: "firmware-linux-nonfree"
     install_recommends: no
   when: ansible_system_vendor | lower is search("dell")
-
-- name: Install nonfree network firmware on debian machines when required
-  apt:
-    pkg: "{{ item.package }}"
-    install_recommends: no
-  when: "item.module in loaded_network_kmods"
-  loop: "{{ nonfree_network_firmware }}"
