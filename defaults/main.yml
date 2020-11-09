@@ -36,8 +36,12 @@ grub_cmdline: []
 # <https://www.gnu.org/software/grub/manual/grub/grub.html#serial>
 grub_serial_console: ""
 
-nonfree_network_firmware:
+nic_packages:
   - module: "r8169"
     package: "firmware-realtek"
+    distributions:
+      - debian
   - module: "bnx2"
     package: "firmware-bnx2"
+    distributions:
+      - debian
