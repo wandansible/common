@@ -14,6 +14,8 @@
     opts: "{{ item.opts | default(omit) }}"
     state: mounted
   loop: "{{ storage_mounts }}"
+  loop_control:
+    label: "{{ item.path }}"
 
 - name: Add backend storage directory for /scratch
   file:

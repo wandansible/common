@@ -78,6 +78,8 @@
     id: "{{ item.key.id | default(omit) }}"
     state: present
   loop: "{{ useful_repos }}"
+  loop_control:
+    label: "{{ item.name }}"
 
 - name: Add useful repos
   apt_repository:
@@ -86,6 +88,8 @@
     update_cache: yes
     state: present
   loop: "{{ useful_repos }}"
+  loop_control:
+    label: "{{ item.name }}"
 
 - name: Install useful packages
   apt:
