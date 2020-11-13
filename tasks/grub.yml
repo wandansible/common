@@ -6,7 +6,7 @@
     backrefs: yes
     regexp: '^GRUB_CMDLINE_LINUX_DEFAULT="((?!.*{{ item }}.*).*)"$'
     line: 'GRUB_CMDLINE_LINUX_DEFAULT="\1 {{ item }}"'
-  with_items: "{{ grub_cmdline }}"
+  loop: "{{ grub_cmdline }}"
   notify: update-grub
 
 - name: Set grub serial console

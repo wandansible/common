@@ -13,7 +13,7 @@
     fstype: "{{ item.fstype }}"
     opts: "{{ item.opts | default(omit) }}"
     state: mounted
-  with_items: "{{ storage_mounts }}"
+  loop: "{{ storage_mounts }}"
 
 - name: Add backend storage directory for /scratch
   file:

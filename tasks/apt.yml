@@ -77,7 +77,7 @@
     url: "{{ item.key.url }}"
     id: "{{ item.key.id | default(omit) }}"
     state: present
-  with_items: "{{ useful_repos }}"
+  loop: "{{ useful_repos }}"
 
 - name: Add useful repos
   apt_repository:
@@ -85,7 +85,7 @@
     filename: "{{ item.name }}"
     update_cache: yes
     state: present
-  with_items: "{{ useful_repos }}"
+  loop: "{{ useful_repos }}"
 
 - name: Install useful packages
   apt:
