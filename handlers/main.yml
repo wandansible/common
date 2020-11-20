@@ -1,10 +1,12 @@
 ---
 
 - name: update-grub
-  command: update-grub
+  command:
+    cmd: update-grub
 
 - name: update-initramfs
-  command: update-initramfs -u -k all
+  command:
+    cmd: update-initramfs -u -k all
 
 - name: restart systemd-modules-load
   service:
