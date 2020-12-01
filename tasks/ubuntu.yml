@@ -9,3 +9,27 @@
     dest: /etc/default/motd-news
     regexp: '^ENABLED=1$'
     line: 'ENABLED=0'
+
+- name: Check for motd-news.timer
+  ansible.builtin.stat:
+    path: /lib/systemd/system/motd-news.timer
+  register: _motd_news_timer_check
+
+- name: Stop and disable motd-news.timer
+  ansible.builtin.systemd:
+    name: motd-news.timer
+    state: stopped
+    enabled: false
+  when: _motd_news_timer_check.stat.exists
+
+- name: Check for motd-news.service
+  ansible.builtin.stat:
+    path: /lib/systemd/system/motd-news.service
+  register: _motd_news_service_check
+
+- name: Disable and mask motd-news.service
+  ansible.builtin.systemd:
+    name: motd-news.service
+    enabled: false
+    masked: true
+  when: _motd_news_service_check.stat.exists
