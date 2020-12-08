@@ -6,6 +6,15 @@
     state: present
   when: storage_mounts | selectattr('fstype', 'match', 'nfs\d?') | list | length > 0
 
+- name: Set idmapd domain
+  ansible.builtin.lineinfile:
+    path: /etc/idmapd.conf
+    regexp: '^Domain\s*='
+    insertafter: '^#\s*Domain\s*='
+    firstmatch: 'yes'
+    line: "Domain = {{ idmapd_domain }}"
+  when: idmapd_domain
+
 - name: Mount storage
   mount:
     src: "{{ item.src }}"

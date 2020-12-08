@@ -30,6 +30,8 @@ scratch_backend_location: ""
 
 storage_mounts: []
 
+idmapd_domain: ""
+
 grub_cmdline: []
 
 # String containing serial options to pass to grub:
