@@ -10,3 +10,11 @@
     dest: /etc/hosts
     regexp: "^127.0.1.1.+$"
     line: "127.0.1.1	{{ inventory_hostname }} {{ inventory_hostname_short }}"
+
+- name: Set mailname in /etc/mailname
+  ansible.builtin.copy:
+    content: "{{ inventory_hostname }}\n"
+    dest: "/etc/mailname"
+    owner: "root"
+    group: "root"
+    mode: "u=rw,g=r,o=r"
