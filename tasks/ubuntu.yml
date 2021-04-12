@@ -4,11 +4,17 @@
   apt:
     pkg: "linux-generic-hwe-{{ ansible_distribution_version }}"
 
+- name: Check for motd news config file
+  ansible.builtin.stat:
+    path: /etc/default/motd-news
+  register: _motd_news_config_check
+
 - name: Disable motd news on ubuntu
   lineinfile:
     dest: /etc/default/motd-news
     regexp: '^ENABLED=1$'
     line: 'ENABLED=0'
+  when: _motd_news_config_check.stat.exists
 
 - name: Check for motd-news.timer
   ansible.builtin.stat:
