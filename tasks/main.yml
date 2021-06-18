@@ -4,9 +4,9 @@
 - import_tasks: dns.yml
 - import_tasks: apt.yml
 - import_tasks: ubuntu.yml
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_lsb.id == "Ubuntu"
 - import_tasks: debian.yml
-  when: ansible_distribution == "Debian"
+  when: ansible_lsb.id == "Debian"
 - import_tasks: storage.yml
 - import_tasks: kernel.yml
 - import_tasks: grub.yml

@@ -1,0 +1,9 @@
+# {{ ansible_managed }}
+
+# raspbian
+deb {{ raspbian_mirror }} {{ ansible_distribution_release }} main contrib non-free rpi
+deb-src {{ raspbian_mirror }} {{ ansible_distribution_release }} main contrib non-free rpi
+
+# raspberry pi specific packages (kernel, firmware etc)
+deb {{ raspi_mirror }} {{ ansible_distribution_release }} main
+deb-src {{ raspi_mirror }} {{ ansible_distribution_release }} main
