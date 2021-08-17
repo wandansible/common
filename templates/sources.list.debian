@@ -1,10 +1,16 @@
+#jinja2: trim_blocks: "false", lstrip_blocks: "true"
+{% if ansible_distribution_version is version("11", ">=") %}
+  {% set _security_distribution = ansible_distribution_release + "-security" %}
+{% else %}
+  {% set _security_distribution = ansible_distribution_release + "/updates" %}
+{% endif %}
 # {{ ansible_managed }}
 
 deb {{ debian_mirror }} {{ ansible_distribution_release }} main contrib non-free
 deb-src {{ debian_mirror }} {{ ansible_distribution_release }} main contrib non-free
 
-deb http://security.debian.org/debian-security {{ ansible_distribution_release }}/updates main contrib non-free
-deb-src http://security.debian.org/debian-security {{ ansible_distribution_release }}/updates main contrib non-free
+deb http://security.debian.org/debian-security {{ _security_distribution }} main contrib non-free
+deb-src http://security.debian.org/debian-security {{ _security_distribution }} main contrib non-free
 
 deb {{ debian_mirror }} {{ ansible_distribution_release }}-updates main contrib non-free
 deb-src {{ debian_mirror }} {{ ansible_distribution_release }}-updates main contrib non-free
