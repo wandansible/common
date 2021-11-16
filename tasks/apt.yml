@@ -42,6 +42,11 @@
     pkg: needrestart
     state: present
 
+- name: Install lsb-release
+  ansible.builtin.apt:
+    pkg: lsb-release
+    state: present
+
 - name: Install intel microcode on physical hosts with an Intel CPU
   apt:
     pkg: "intel-microcode"
