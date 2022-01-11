@@ -27,13 +27,6 @@ raspbian_mirror: "http://raspbian.raspberrypi.org/raspbian/"
 raspi_mirror: "http://archive.raspberrypi.org/debian/"
 debian_backports_components: "{{ ansible_distribution_release }}-backports main contrib non-free"
 
-scratch_dir: "/scratch"
-scratch_backend_location: ""
-
-storage_mounts: []
-
-idmapd_domain: ""
-
 grub_cmdline: []
 
 # String containing serial options to pass to grub:
