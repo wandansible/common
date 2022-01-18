@@ -77,6 +77,7 @@
   apt_key:
     url: "{{ item.key.url }}"
     id: "{{ item.key.id | default(omit) }}"
+    keyring: "{{ item.key.keyring | default(omit) }}"
     state: present
   loop: "{{ useful_repos }}"
   loop_control:
