@@ -1,10 +1,12 @@
 ---
 
 - name: Get list of loaded NIC kernel modules
-  set_fact:
-    loaded_nic_kmods: "{% set loaded_nic_kmods = loaded_nic_kmods | default([]) + [hostvars[inventory_hostname][item]['module']] %}{{ loaded_nic_kmods | list }}"
-  when:
-    - "hostvars[inventory_hostname][item]['module'] is defined"
-  loop: "{{ ansible_interfaces | map('regex_replace', '^', 'ansible_') | map('regex_replace', '-', '_') | list }}"
-  loop_control:
-    label: '{{ item + "[''module'']" }}'
+  ansible.builtin.set_fact:
+    loaded_nic_kmods: "{{ hostvars[inventory_hostname] |
+                          json_query(
+                            '* | [?device && module && type == `ether`].{
+                                  device: device,
+                                  module: module
+                                }'
+                          )
+                       }}"

@@ -67,7 +67,7 @@
     pkg: "{{ item.package }}"
     install_recommends: no
   when:
-    - "item.module in loaded_nic_kmods"
+    - "item.module in loaded_nic_kmods | json_query('[*].module')"
     - "ansible_distribution | lower in item.distributions"
   loop: "{{ nic_packages }}"
   loop_control:
