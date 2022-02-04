@@ -47,3 +47,5 @@ nic_packages:
     distributions:
       - debian
       - ubuntu
+
+ssh_rescue_pubkey: ""
