@@ -1,12 +1,12 @@
 ---
 
-- import_tasks: facts.yml
-- import_tasks: ssh.yml
-- import_tasks: dns.yml
-- import_tasks: apt.yml
-- import_tasks: ubuntu.yml
+- ansible.builtin.import_tasks: facts.yml
+- ansible.builtin.import_tasks: ssh.yml
+- ansible.builtin.import_tasks: dns.yml
+- ansible.builtin.import_tasks: apt.yml
+- ansible.builtin.import_tasks: ubuntu.yml
   when: ansible_lsb.id == "Ubuntu"
-- import_tasks: debian.yml
+- ansible.builtin.import_tasks: debian.yml
   when: ansible_lsb.id == "Debian"
-- import_tasks: kernel.yml
-- import_tasks: grub.yml
+- ansible.builtin.import_tasks: kernel.yml
+- ansible.builtin.import_tasks: grub.yml
