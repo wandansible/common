@@ -1,0 +1,7 @@
+---
+- name: Add rescue ssh key for root user
+  ansible.posix.authorized_key:
+    user: root
+    state: present
+    key: "{{ ssh_rescue_pubkey }}"
+  when: "ssh_rescue_pubkey != ''"
