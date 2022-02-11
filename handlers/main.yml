@@ -1,14 +1,14 @@
 ---
 
 - name: update-grub
-  command:
+  ansible.builtin.command:
     cmd: update-grub
 
 - name: update-initramfs
-  command:
+  ansible.builtin.command:
     cmd: update-initramfs -u -k all
 
 - name: restart systemd-modules-load
-  service:
+  ansible.builtin.service:
     name: systemd-modules-load
     state: restarted

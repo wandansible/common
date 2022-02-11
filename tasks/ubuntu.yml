@@ -1,7 +1,7 @@
 ---
 
 - name: Install LTS enablement stack on ubuntu
-  apt:
+  ansible.builtin.apt:
     pkg: "linux-generic-hwe-{{ ansible_distribution_version }}"
 
 - name: Check for motd news config file
@@ -10,7 +10,7 @@
   register: _motd_news_config_check
 
 - name: Disable motd news on ubuntu
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/default/motd-news
     regexp: '^ENABLED=1$'
     line: 'ENABLED=0'
@@ -22,7 +22,7 @@
   register: _motd_news_timer_check
 
 - name: Stop and disable motd-news.timer
-  ansible.builtin.systemd:
+  ansible.builtin.service:
     name: motd-news.timer
     state: stopped
     enabled: false

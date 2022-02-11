@@ -1,21 +1,24 @@
 ---
 
 - name: Enable backports repo on debian
-  apt_repository:
+  ansible.builtin.apt_repository:
     filename: "debian-backports"
     repo: "deb {{ debian_mirror }} {{ debian_backports_components }}"
     update_cache: yes
     state: present
+  register: _apt_enable_debian_backports
 
-- name: Install needrestart from backports on debian stretch
-  apt:
+- name: Install needrestart from backports on debian stretch  # noqa package-latest no-handler
+  ansible.builtin.apt:
     pkg: needrestart
-    default_release: "{{ansible_distribution_release}}-backports"
+    default_release: "{{ ansible_distribution_release }}-backports"
     state: latest
-  when: ansible_distribution_release == "stretch"
+  when:
+    - _apt_enable_debian_backports.changed
+    - ansible_distribution_release == "stretch"
 
 - name: Install nonfree firmware on debian machines with dell hardware
-  apt:
+  ansible.builtin.apt:
     pkg: "firmware-linux-nonfree"
     install_recommends: no
   when: ansible_system_vendor | lower is search("dell")

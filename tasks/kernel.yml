@@ -1,19 +1,19 @@
 ---
 
 - name: Enable reboot on kernel panic
-  sysctl:
+  ansible.posix.sysctl:
     key: kernel.panic
     value: '20'
     sysctl_file: /etc/sysctl.d/kernel.panic.conf
 
 - name: Enable kernel panic on oops
-  sysctl:
+  ansible.posix.sysctl:
     key: kernel.panic_on_oops
     value: '1'
     sysctl_file: /etc/sysctl.d/kernel.panic_on_oops.conf
 
 - name: Configure kernel modules to load
-  template:
+  ansible.builtin.template:
     src: "modprobe/modules-load.conf"
     dest: "{{ modprobe_modules_load_file }}"
     mode: "u=rw,g=r,o=r"
@@ -21,7 +21,7 @@
   notify: restart systemd-modules-load
 
 - name: Unload blacklisted kernel modules
-  modprobe:
+  community.general.modprobe:
     name: "{{ item.name }}"
     state: "absent"
   loop: "{{ modprobe_modules | selectattr('state', 'equalto', 'blacklisted') | list }}"
@@ -29,7 +29,7 @@
     label: "{{ item.name }}"
 
 - name: Blacklist kernel modules
-  template:
+  ansible.builtin.template:
     src: "modprobe/modprobe-blacklist.conf"
     dest: "{{ modprobe_blacklist_config_file }}"
     mode: "u=rw,g=r,o=r"
@@ -39,7 +39,7 @@
     - update-initramfs
 
 - name: Configure kernel module options
-  template:
+  ansible.builtin.template:
     src: "modprobe/modprobe-options.conf"
     dest: "{{ modprobe_options_config_file }}"
     mode: "u=rw,g=r,o=r"
@@ -49,5 +49,5 @@
       selectattr('options', 'defined') |
       list | length >= 1
   notify:
-   - update-initramfs
-   - restart systemd-modules-load
+    - update-initramfs
+    - restart systemd-modules-load

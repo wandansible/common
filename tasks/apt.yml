@@ -1,14 +1,14 @@
 ---
 
 - name: Install https support for apt
-  apt:
+  ansible.builtin.apt:
     pkg:
       - apt-transport-https
     state: present
   when: not (ansible_distribution == "Debian" and ansible_distribution_version is version('10', '>='))
 
 - name: Install gnupg on newer ubuntu/debian
-  apt:
+  ansible.builtin.apt:
     pkg:
       - gnupg
     state: present
@@ -17,7 +17,7 @@
     (ansible_distribution == "Ubuntu" and ansible_distribution_version is version('18.04', '>='))
 
 - name: Install gnupg2 on older ubuntu/debian
-  apt:
+  ansible.builtin.apt:
     pkg:
       - gnupg2
     state: present
@@ -26,19 +26,22 @@
     (ansible_distribution == "Ubuntu" and ansible_distribution_version is version('18.04', '<'))
 
 - name: Configure apt mirror
-  template:
+  ansible.builtin.template:
     src: "templates/sources.list.{{ ansible_lsb.id|lower }}"
     dest: /etc/apt/sources.list
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
   when: ansible_os_family == "Debian"
   register: apt_mirror
 
-- name: Refresh apt cache when mirror changes
-  apt:
+- name: Refresh apt cache when mirror changes  # noqa no-handler
+  ansible.builtin.apt:
     update_cache: yes
-  when: apt_mirror.changed == true
+  when: apt_mirror.changed
 
 - name: Install needrestart
-  apt:
+  ansible.builtin.apt:
     pkg: needrestart
     install_recommends: no
     state: present
@@ -49,21 +52,21 @@
     state: present
 
 - name: Install intel microcode on physical hosts with an Intel CPU
-  apt:
+  ansible.builtin.apt:
     pkg: "intel-microcode"
   when:
     - "ansible_virtualization_role == 'host'"
     - "ansible_processor | lower is search('intel')"
 
 - name: Install amd64 microcode on physical hosts with an AMD CPU
-  apt:
+  ansible.builtin.apt:
     pkg: "amd64-microcode"
   when:
     - "ansible_virtualization_role == 'host'"
     - "ansible_processor | lower is search('amd')"
 
 - name: Install NIC specific packages when required
-  apt:
+  ansible.builtin.apt:
     pkg: "{{ item.package }}"
     install_recommends: no
   when:
@@ -74,7 +77,7 @@
     label: "{{ item.module }}"
 
 - name: Add keys for useful repos
-  apt_key:
+  ansible.builtin.apt_key:
     url: "{{ item.key.url }}"
     id: "{{ item.key.id | default(omit) }}"
     keyring: "{{ item.key.keyring | default(omit) }}"
@@ -84,7 +87,7 @@
     label: "{{ item.name }}"
 
 - name: Add useful repos
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: "{{ item.repo }}"
     filename: "{{ item.name }}"
     update_cache: yes
@@ -94,7 +97,7 @@
     label: "{{ item.name }}"
 
 - name: Install useful packages
-  apt:
+  ansible.builtin.apt:
     pkg: "{{ useful_packages }}"
     state: present
 
@@ -127,22 +130,22 @@
   when: not packages_purge or packages_purge | length == 0
 
 - name: Install packages
-  apt:
+  ansible.builtin.apt:
     pkg: "{{ packages_install }}"
     state: present
 
-- name: Upgrade packages
-  apt:
+- name: Upgrade packages  # noqa package-latest
+  ansible.builtin.apt:
     pkg: "{{ packages_upgrade }}"
     state: latest
 
 - name: Remove packages
-  apt:
+  ansible.builtin.apt:
     pkg: "{{ packages_remove }}"
     state: absent
 
 - name: Purge packages
-  apt:
+  ansible.builtin.apt:
     pkg: "{{ packages_purge }}"
     purge: yes
     state: absent
