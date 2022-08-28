@@ -84,6 +84,12 @@
   loop_control:
     label: "{{ item.module }}"
 
+- name: Merge all useful_repos variables
+  merge_vars:
+    suffix_to_merge: useful_repos__merge
+    merged_var_name: useful_repos
+    expected_type: list
+  when: not useful_repos or useful_repos | length == 0
 
 - name: Add useful apt repos
   ansible.builtin.include_tasks:
