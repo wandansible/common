@@ -84,22 +84,16 @@
   loop_control:
     label: "{{ item.module }}"
 
-- name: Add keys for useful repos
-  ansible.builtin.apt_key:
-    url: "{{ item.key.url }}"
-    id: "{{ item.key.id | default(omit) }}"
-    keyring: "{{ item.key.keyring | default(omit) }}"
-    state: present
-  loop: "{{ useful_repos }}"
-  loop_control:
-    label: "{{ item.name }}"
+- name: Merge all useful_repos variables
+  merge_vars:
+    suffix_to_merge: useful_repos__merge
+    merged_var_name: useful_repos
+    expected_type: list
+  when: not useful_repos or useful_repos | length == 0
 
-- name: Add useful repos
-  ansible.builtin.apt_repository:
-    repo: "{{ item.repo }}"
-    filename: "{{ item.name }}"
-    update_cache: yes
-    state: present
+- name: Add useful apt repos
+  ansible.builtin.include_tasks:
+    file: add-repo.yml
   loop: "{{ useful_repos }}"
   loop_control:
     label: "{{ item.name }}"

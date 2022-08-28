@@ -3,7 +3,7 @@
 - ansible.builtin.import_tasks: facts.yml
 - ansible.builtin.import_tasks: ssh.yml
 - ansible.builtin.import_tasks: dns.yml
-- ansible.builtin.import_tasks: apt.yml
+- ansible.builtin.import_tasks: apt/main.yml
 - ansible.builtin.import_tasks: ubuntu.yml
   when: ansible_lsb.id == "Ubuntu"
 - ansible.builtin.import_tasks: debian.yml
