@@ -1,4 +1,23 @@
 ---
+- name: Check sources.list file exists for {{ item.name }} apt repo
+  ansible.builtin.stat:
+    path: /etc/apt/sources.list.d/{{ item.name }}.list
+  register: _check_for_apt_sources_list_file
+
+- name: Remove sources.list file for {{ item.name }} apt repo if different than expected
+  block:
+    - name: Get contents of sources.list file for {{ item.name }} apt repo
+      ansible.builtin.slurp:
+        src: /etc/apt/sources.list.d/{{ item.name }}.list
+      register: _apt_sources_list_file
+
+    - name: Remove sources.list file for {{ item.name }} apt repo
+      ansible.builtin.file:
+        path: /etc/apt/sources.list.d/{{ item.name }}.list
+        state: absent
+      when: (item.repo | trim) != (_apt_sources_list_file.content | b64decode | trim)
+  when: _check_for_apt_sources_list_file.stat.exists
+
 - name: Add public gpg signing key for {{ item.name }} apt repo
   ansible.builtin.apt_key:
     url: "{{ item.key.url }}"
