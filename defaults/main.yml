@@ -5,15 +5,6 @@ packages_upgrade: []
 packages_remove: []
 packages_purge: []
 
-# List of dicts with kernel modules to manage.
-# The dicts must have the following structure:
-# {
-#   name: <name>     # Name of the module (required)
-#   state: <state>   # Can be blacklisted, deactivate or loaded (required)
-#   options:         # List of strings with options for the module
-#     - <option1>
-#     - <optionN>
-# }
 modprobe_modules: []
 modprobe_modules_load_file: "/etc/modules-load.d/ansible.conf"
 modprobe_options_config_file: "/etc/modprobe.d/zz-ansible-options.conf"
@@ -26,9 +17,6 @@ raspi_mirror: "http://archive.raspberrypi.org/debian/"
 debian_backports_components: "{{ ansible_distribution_release }}-backports main contrib non-free"
 
 grub_cmdline: []
-
-# String containing serial options to pass to grub:
-# <https://www.gnu.org/software/grub/manual/grub/grub.html#serial>
 grub_serial_console: ""
 
 nic_packages:

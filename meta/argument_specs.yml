@@ -1,0 +1,154 @@
+---
+argument_specs:
+  main:
+    short_description: A collection of common tasks
+    description: |
+      A collection of tasks that are common between all Debian and Ubuntu hosts.
+      This includes configuring apt repositories, managing extra packages,
+      configuring kernel options, system configuration,
+      and adding an SSH key to the root user's authorized key file.
+    options:
+      apt_repos:
+        description: List of additional apt repos
+        type: list
+        elements: dict
+        options:
+          name:
+            description: Filename for the apt sources.list file (without extension)
+            type: str
+            required: true
+          repo:
+            description: |
+              Repo source definition for sources.list file, in the following format:
+              deb [ option1=value1 option2=value2 ] uri suite [component1] [component2] [...]
+            type: str
+            required: true
+          key:
+            description: Apt public signing key information for the repo
+            type: dict
+            required: true
+            options:
+              url:
+                description: URL for the apt key
+                type: str
+                required: true
+              id:
+                description: Apt key fingerprint
+                type: str
+              keyring:
+                description: Path for the destination GPG keyring file to add the key to
+                type: str
+
+      packages_install:
+        description: List of packages to install
+        type: list
+        elements: str
+
+      packages_upgrade:
+        description: List of packages to upgrade
+        type: list
+        elements: str
+
+      packages_remove:
+        description: List of packages to remove
+        type: list
+        elements: str
+
+      packages_purge:
+        description: List of packages to purge
+        type: list
+        elements: str
+
+      modprobe_modules:
+        description: List of kernel modules to manage
+        type: list
+        elements: dict
+        options:
+          name:
+            description: Name of the module
+            type: str
+            required: true
+          state:
+            description: State for the module
+            type: str
+            required: true
+            choices:
+              - blacklisted
+              - loaded
+          options:
+            description: Options for the module
+            type: list
+            elements: str
+
+      modprobe_modules_load_file:
+        description: Path for the file containing a list of kernel modules to load during boot
+        type: str
+        default: /etc/modules-load.d/ansible.conf
+
+      modprobe_options_config_file:
+        description: Path for the file containing loaded kernel modules options
+        type: str
+        default: /etc/modprobe.d/zz-ansible-options.conf
+
+      modprobe_blacklist_config_file:
+        description: Path for the file containing a list of blacklisted kernel modules
+        type: str
+        default: /etc/modprobe.d/zz-ansible-blacklist.conf
+
+      debian_mirror:
+        description: Debian apt mirror URL
+        type: str
+        default: http://deb.debian.org/debian/
+
+      ubuntu_mirror:
+        description: Ubuntu apt mirror URL
+        type: str
+        default: http://archive.ubuntu.com/ubuntu/
+
+      raspbian_mirror:
+        description: Raspbian apt mirror URL
+        type: str
+        default: http://raspbian.raspberrypi.org/raspbian/
+
+      raspi_mirror:
+        description: Raspberrypi apt mirror URL
+        type: str
+        default: http://archive.raspberrypi.org/debian/
+
+      debian_backports_components:
+        description: Debian-backports apt repo components
+        type: str
+
+      grub_cmdline:
+        description: GRUB commandline default options
+        type: list
+        elements: str
+
+      grub_serial_console:
+        description: |
+          Serial options to pass to GRUB,
+          see https://www.gnu.org/software/grub/manual/grub/grub.html#serial
+        type: str
+
+      nic_packages:
+        description: Additional packages to install for NIC firmware support
+        type: list
+        elements: dict
+        options:
+          package:
+            description: Package to install
+            type: str
+            required: true
+          module:
+            description: Install the package only when this module is present
+            type: str
+            required: true
+          distributions:
+            description: Linux distributions the package should be installed on (use lowercase)
+            type: list
+            elements: str
+            required: true
+
+      ssh_rescue_pubkey:
+        description: Add this SSH key to the root user's authorized key file
+        type: str
