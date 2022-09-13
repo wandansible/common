@@ -98,11 +98,6 @@
   loop_control:
     label: "{{ item.name }}"
 
-- name: Install useful packages
-  ansible.builtin.apt:
-    pkg: "{{ useful_packages }}"
-    state: present
-
 - name: Merge all packages_install variables
   merge_vars:
     suffix_to_merge: packages_install__merge
