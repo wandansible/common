@@ -1,6 +1,5 @@
 ---
-useful_repos: []
-
+apt_repos: []
 packages_install: []
 packages_upgrade: []
 packages_remove: []
