@@ -84,52 +84,12 @@
   loop_control:
     label: "{{ item.module }}"
 
-- name: Merge all useful_repos variables
-  merge_vars:
-    suffix_to_merge: useful_repos__merge
-    merged_var_name: useful_repos
-    expected_type: list
-  when: not useful_repos or useful_repos | length == 0
-
-- name: Add useful apt repos
+- name: Add additional apt repos
   ansible.builtin.include_tasks:
     file: add-repo.yml
-  loop: "{{ useful_repos }}"
+  loop: "{{ apt_repos }}"
   loop_control:
     label: "{{ item.name }}"
-
-- name: Install useful packages
-  ansible.builtin.apt:
-    pkg: "{{ useful_packages }}"
-    state: present
-
-- name: Merge all packages_install variables
-  merge_vars:
-    suffix_to_merge: packages_install__merge
-    merged_var_name: packages_install
-    expected_type: list
-  when: not packages_install or packages_install | length == 0
-
-- name: Merge all packages_upgrade variables
-  merge_vars:
-    suffix_to_merge: packages_upgrade__merge
-    merged_var_name: packages_upgrade
-    expected_type: list
-  when: not packages_upgrade or packages_upgrade | length == 0
-
-- name: Merge all packages_remove variables
-  merge_vars:
-    suffix_to_merge: packages_remove__merge
-    merged_var_name: packages_remove
-    expected_type: list
-  when: not packages_remove or packages_remove | length == 0
-
-- name: Merge all packages_purge variables
-  merge_vars:
-    suffix_to_merge: packages_purge__merge
-    merged_var_name: packages_purge
-    expected_type: list
-  when: not packages_purge or packages_purge | length == 0
 
 - name: Install packages
   ansible.builtin.apt:
