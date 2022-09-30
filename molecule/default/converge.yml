@@ -1,0 +1,39 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include wandansible.common"
+      ansible.builtin.include_role:
+        name: "wandansible.common"
+      vars:
+        debian_mirror: "https://mirror.fsmg.org.nz/debian/"
+        ubuntu_mirror: "https://mirror.fsmg.org.nz/ubuntu/"
+
+        apt_repos:
+          - name: wand-libwandio
+            repo: >-
+              deb [signed-by=/etc/apt/keyrings/wand-libwandio.gpg]
+              https://dl.cloudsmith.io/public/wand/libwandio/deb/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} main
+            key:
+              url: https://dl.cloudsmith.io/public/wand/libwandio/gpg.69A507877C4B94E8.key
+              id: 54B22D514CCD2F1060E195AD69A507877C4B94E8
+              keyring: /etc/apt/keyrings/wand-libwandio.gpg
+          - name: wand-libwandder
+            repo: >-
+              deb [signed-by=/etc/apt/keyrings/wand-libwandder.gpg]
+              https://dl.cloudsmith.io/public/wand/libwandder/deb/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} main
+            key:
+              url: https://dl.cloudsmith.io/public/wand/libwandder/gpg.850A47EB27EE6871.key
+              id: 9303641FB1EA5BC0E7527327850A47EB27EE6871
+              keyring: /etc/apt/keyrings/wand-libwandder.gpg
+          - name: wand-libtrace
+            repo: >-
+              deb [signed-by=/etc/apt/keyrings/wand-libtrace.gpg]
+              https://dl.cloudsmith.io/public/wand/libtrace/deb/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} main
+            key:
+              url: https://dl.cloudsmith.io/public/wand/libtrace/gpg.4DA49CA206D589FA.key
+              id: 34C301C4F83705A7B73E1A2A4DA49CA206D589FA
+              keyring: /etc/apt/keyrings/wand-libtrace.gpg
+
+  environment:
+    ANSIBLE_UNSAFE_WRITES: "true"

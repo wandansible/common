@@ -1,0 +1,8 @@
+---
+- name: Prepare
+  hosts: all
+  tasks:
+    - name: "Install sysctl"
+      ansible.builtin.apt:
+        pkg:
+          - "procps"
