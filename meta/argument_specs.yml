@@ -115,10 +115,6 @@ argument_specs:
         type: str
         default: http://archive.raspberrypi.org/debian/
 
-      debian_backports_components:
-        description: Debian-backports apt repo components
-        type: str
-
       grub_cmdline:
         description: GRUB commandline default options
         type: list

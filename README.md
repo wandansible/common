@@ -68,11 +68,6 @@ OPTIONS (= is mandatory):
 
             type: str
 
-- debian_backports_components
-        Debian-backports apt repo components
-        [Default: (null)]
-        type: str
-
 - debian_mirror
         Debian apt mirror URL
         [Default: http://deb.debian.org/debian/]
