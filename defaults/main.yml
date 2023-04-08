@@ -5,6 +5,8 @@ packages_upgrade: []
 packages_remove: []
 packages_purge: []
 
+hostname_strategy: systemd
+
 modprobe_modules: []
 modprobe_modules_load_file: "/etc/modules-load.d/ansible.conf"
 modprobe_options_config_file: "/etc/modprobe.d/zz-ansible-options.conf"

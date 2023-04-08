@@ -85,6 +85,13 @@ OPTIONS (= is mandatory):
         [Default: (null)]
         type: str
 
+- hostname_strategy
+        Strategy to use when updating the hostname, see https://docs.a
+        nsible.com/ansible/latest/collections/ansible/builtin/hostname
+        _module.html#parameter-use
+        default: systemd
+        type: str
+
 - modprobe_blacklist_config_file
         Path for the file containing a list of blacklisted kernel
         modules
