@@ -1,0 +1,9 @@
+#jinja2: trim_blocks: "false", lstrip_blocks: "true"
+{% if ansible_distribution_version is version("12", ">=") %}
+  {% set _non_free_component = "non-free-firmware" %}
+{% else %}
+  {% set _non_free_component = "non-free" %}
+{% endif %}
+# {{ ansible_managed }}
+
+deb {{ debian_mirror }} {{ ansible_distribution_release }}-backports main contrib {{ _non_free_component }}

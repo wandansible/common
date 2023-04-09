@@ -68,11 +68,6 @@ OPTIONS (= is mandatory):
 
             type: str
 
-- debian_backports_components
-        Debian-backports apt repo components
-        [Default: (null)]
-        type: str
-
 - debian_mirror
         Debian apt mirror URL
         [Default: http://deb.debian.org/debian/]
@@ -88,6 +83,13 @@ OPTIONS (= is mandatory):
         Serial options to pass to GRUB, see
         https://www.gnu.org/software/grub/manual/grub/grub.html#serial
         [Default: (null)]
+        type: str
+
+- hostname_strategy
+        Strategy to use when updating the hostname, see https://docs.a
+        nsible.com/ansible/latest/collections/ansible/builtin/hostname
+        _module.html#parameter-use
+        default: systemd
         type: str
 
 - modprobe_blacklist_config_file

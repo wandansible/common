@@ -5,6 +5,8 @@ packages_upgrade: []
 packages_remove: []
 packages_purge: []
 
+hostname_strategy: systemd
+
 modprobe_modules: []
 modprobe_modules_load_file: "/etc/modules-load.d/ansible.conf"
 modprobe_options_config_file: "/etc/modprobe.d/zz-ansible-options.conf"
@@ -14,7 +16,6 @@ debian_mirror: "http://deb.debian.org/debian/"
 ubuntu_mirror: "http://archive.ubuntu.com/ubuntu/"
 raspbian_mirror: "http://raspbian.raspberrypi.org/raspbian/"
 raspi_mirror: "http://archive.raspberrypi.org/debian/"
-debian_backports_components: "{{ ansible_distribution_release }}-backports main contrib non-free"
 
 grub_cmdline: []
 grub_serial_console: ""

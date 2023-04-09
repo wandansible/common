@@ -59,6 +59,13 @@ argument_specs:
         type: list
         elements: str
 
+      hostname_strategy:
+        description: |
+          Strategy to use when updating the hostname,
+          see https://docs.ansible.com/ansible/latest/collections/ansible/builtin/hostname_module.html#parameter-use
+        type: str
+        default: systemd
+
       modprobe_modules:
         description: List of kernel modules to manage
         type: list
@@ -114,10 +121,6 @@ argument_specs:
         description: Raspberrypi apt mirror URL
         type: str
         default: http://archive.raspberrypi.org/debian/
-
-      debian_backports_components:
-        description: Debian-backports apt repo components
-        type: str
 
       grub_cmdline:
         description: GRUB commandline default options

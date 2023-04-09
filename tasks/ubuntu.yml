@@ -1,8 +1,15 @@
 ---
+- name: Check if LTS enablement package exists
+  ansible.builtin.command:
+    cmd: "apt show linux-generic-hwe-{{ ansible_distribution_version }}"
+  changed_when: false
+  failed_when: false
+  register: _check_lts_package
 
 - name: Install LTS enablement stack on ubuntu
   ansible.builtin.apt:
     pkg: "linux-generic-hwe-{{ ansible_distribution_version }}"
+  when: _check_lts_package.rc == 0
 
 - name: Check for motd news config file
   ansible.builtin.stat:
