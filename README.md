@@ -88,6 +88,18 @@ OPTIONS (= is mandatory):
         default: systemd
         type: str
 
+- language
+        The value of the LANGUAGE environment variable, or empty
+        string to leave LANGUAGE as is
+        default: ''
+        type: str
+
+- locale
+        The value of the LANG environment variable, or empty string to
+        leave LANG as is
+        default: ''
+        type: str
+
 - modprobe_blacklist_config_file
         Path for the file containing a list of blacklisted kernel
         modules
@@ -188,6 +200,17 @@ OPTIONS (= is mandatory):
         Add this SSH key to the root user's authorized key file
         default: null
         type: str
+
+- timezone
+        Name of the timezone for the system clock, or empty string to
+        leave timezone as is
+        default: ''
+        type: str
+
+- timezone_hwclock
+        Whether the hardware clock is in UTC or in local timezone
+        choices: [local, UTC]
+        default: null
         type: str
 
 - ubuntu_mirror
@@ -220,6 +243,9 @@ Example Playbook
         - role: wandansible.common
           become: true
           vars:
+            locale: "C.UTF-8"
+            timezone: "Etc/UTC"
+
             debian_mirror: "https://mirror.fsmg.org.nz/debian/"
             ubuntu_mirror: "https://mirror.fsmg.org.nz/ubuntu/"
 

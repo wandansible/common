@@ -6,6 +6,9 @@
       ansible.builtin.include_role:
         name: "wandansible.common"
       vars:
+        locale: "C.UTF-8"
+        timezone: "Etc/UTC"
+
         debian_mirror: "https://mirror.fsmg.org.nz/debian/"
         ubuntu_mirror: "https://mirror.fsmg.org.nz/ubuntu/"
 

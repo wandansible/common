@@ -8,6 +8,30 @@ argument_specs:
       configuring kernel options, system configuration,
       and adding an SSH key to the root user's authorized key file.
     options:
+      locale:
+        description: The value of the LANG environment variable, or empty string to leave LANG as is
+        type: str
+        default: ""
+
+      language:
+        description: |
+          The value of the LANGUAGE environment variable, or empty string to leave LANGUAGE as is
+        type: str
+        default: ""
+
+      timezone:
+        description: |
+          Name of the timezone for the system clock, or empty string to leave timezone as is
+        type: str
+        default: ""
+
+      timezone_hwclock:
+        description: Whether the hardware clock is in UTC or in local timezone
+        type: str
+        choices:
+          - local
+          - UTC
+
       apt_repos:
         description: List of additional apt repos
         type: list

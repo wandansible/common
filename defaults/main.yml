@@ -1,4 +1,8 @@
 ---
+locale: ""
+language: ""
+timezone: ""
+
 apt_repos: []
 packages_install: []
 packages_upgrade: []

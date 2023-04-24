@@ -1,0 +1,36 @@
+---
+- name: Install locales package
+  ansible.builtin.apt:
+    pkg: "locales"
+
+- name: Generate locale
+  community.general.locale_gen:
+    name: "{{ locale }}"
+    state: present
+  when: locale != "C.UTF-8"
+
+- name: Set default system locale
+  ansible.builtin.debconf:
+    name: "locales"
+    question: "locales/default_environment_locale"
+    vtype: "string"
+    value: "{{ locale }}"
+  register: _debconf_default_environment_locale
+
+- name: Generate /etc/default/locale
+  ansible.builtin.command:
+    cmd: "update-locale LANG={{ locale }}"
+  when: _debconf_default_environment_locale is changed
+
+- name: Set language in /etc/default/locale
+  ansible.builtin.lineinfile:
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    backrefs: true
+    path: "/etc/default/locale"
+  loop:
+    - regexp: "^#LANGUAGE=(.+)$"
+      line: 'LANGUAGE=\1'
+    - regexp: "^LANGUAGE=(.+)$"
+      line: 'LANGUAGE="{{ language }}"'
+  when: language != ""
