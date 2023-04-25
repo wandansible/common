@@ -7,9 +7,9 @@
 - ansible.builtin.import_tasks: ssh.yml
 - ansible.builtin.import_tasks: dns.yml
 - ansible.builtin.import_tasks: apt/main.yml
-- ansible.builtin.import_tasks: ubuntu.yml
+- ansible.builtin.include_tasks: ubuntu.yml
   when: ansible_lsb.id == "Ubuntu"
-- ansible.builtin.import_tasks: debian.yml
+- ansible.builtin.include_tasks: debian.yml
   when: ansible_lsb.id == "Debian"
 - ansible.builtin.import_tasks: kernel.yml
 - ansible.builtin.import_tasks: grub.yml
