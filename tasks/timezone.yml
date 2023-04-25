@@ -1,0 +1,9 @@
+---
+- name: Install tzdata package
+  ansible.builtin.apt:
+    pkg: "tzdata"
+
+- name: Set timezone
+  community.general.timezone:
+    name: "{{ timezone }}"
+    hwclock: "{{ timezone_hwclock | default(omit) }}"

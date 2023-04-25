@@ -1,6 +1,9 @@
 ---
-
 - ansible.builtin.import_tasks: facts.yml
+- ansible.builtin.import_tasks: timezone.yml
+  when: timezone != ""
+- ansible.builtin.include_tasks: locale.yml
+  when: locale != ""
 - ansible.builtin.import_tasks: ssh.yml
 - ansible.builtin.import_tasks: dns.yml
 - ansible.builtin.import_tasks: apt/main.yml

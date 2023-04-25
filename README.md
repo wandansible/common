@@ -27,7 +27,7 @@ OPTIONS (= is mandatory):
 
 - apt_repos
         List of additional apt repos
-        [Default: (null)]
+        default: null
         elements: dict
         type: list
 
@@ -35,54 +35,50 @@ OPTIONS (= is mandatory):
 
         = key
             Apt public signing key information for the repo
-
             type: dict
 
             OPTIONS:
 
             - id
                 Apt key fingerprint
-                [Default: (null)]
+                default: null
                 type: str
 
             - keyring
                 Path for the destination GPG keyring file to add the
                 key to
-                [Default: (null)]
+                default: null
                 type: str
 
             = url
                 URL for the apt key
-
                 type: str
 
         = name
             Filename for the apt sources.list file (without extension)
-
             type: str
 
         = repo
             Repo source definition for sources.list file, in the
             following format: deb [ option1=value1 option2=value2 ]
             uri suite [component1] [component2] [...]
-
             type: str
 
 - debian_mirror
         Debian apt mirror URL
-        [Default: http://deb.debian.org/debian/]
+        default: http://deb.debian.org/debian/
         type: str
 
 - grub_cmdline
         GRUB commandline default options
-        [Default: (null)]
+        default: null
         elements: str
         type: list
 
 - grub_serial_console
         Serial options to pass to GRUB, see
         https://www.gnu.org/software/grub/manual/grub/grub.html#serial
-        [Default: (null)]
+        default: null
         type: str
 
 - hostname_strategy
@@ -92,15 +88,27 @@ OPTIONS (= is mandatory):
         default: systemd
         type: str
 
+- language
+        The value of the LANGUAGE environment variable, or empty
+        string to leave LANGUAGE as is
+        default: ''
+        type: str
+
+- locale
+        The value of the LANG environment variable, or empty string to
+        leave LANG as is
+        default: ''
+        type: str
+
 - modprobe_blacklist_config_file
         Path for the file containing a list of blacklisted kernel
         modules
-        [Default: /etc/modprobe.d/zz-ansible-blacklist.conf]
+        default: /etc/modprobe.d/zz-ansible-blacklist.conf
         type: str
 
 - modprobe_modules
         List of kernel modules to manage
-        [Default: (null)]
+        default: null
         elements: dict
         type: list
 
@@ -108,34 +116,33 @@ OPTIONS (= is mandatory):
 
         = name
             Name of the module
-
             type: str
 
         - options
             Options for the module
-            [Default: (null)]
+            default: null
             elements: str
             type: list
 
         = state
             State for the module
-            (Choices: blacklisted, loaded)
+            choices: [blacklisted, loaded]
             type: str
 
 - modprobe_modules_load_file
         Path for the file containing a list of kernel modules to load
         during boot
-        [Default: /etc/modules-load.d/ansible.conf]
+        default: /etc/modules-load.d/ansible.conf
         type: str
 
 - modprobe_options_config_file
         Path for the file containing loaded kernel modules options
-        [Default: /etc/modprobe.d/zz-ansible-options.conf]
+        default: /etc/modprobe.d/zz-ansible-options.conf
         type: str
 
 - nic_packages
         Additional packages to install for NIC firmware support
-        [Default: (null)]
+        default: null
         elements: dict
         type: list
 
@@ -144,62 +151,71 @@ OPTIONS (= is mandatory):
         = distributions
             Linux distributions the package should be installed on
             (use lowercase)
-
             elements: str
             type: list
 
         = module
             Install the package only when this module is present
-
             type: str
 
         = package
             Package to install
-
             type: str
 
 - packages_install
         List of packages to install
-        [Default: (null)]
+        default: null
         elements: str
         type: list
 
 - packages_purge
         List of packages to purge
-        [Default: (null)]
+        default: null
         elements: str
         type: list
 
 - packages_remove
         List of packages to remove
-        [Default: (null)]
+        default: null
         elements: str
         type: list
 
 - packages_upgrade
         List of packages to upgrade
-        [Default: (null)]
+        default: null
         elements: str
         type: list
 
 - raspbian_mirror
         Raspbian apt mirror URL
-        [Default: http://raspbian.raspberrypi.org/raspbian/]
+        default: http://raspbian.raspberrypi.org/raspbian/
         type: str
 
 - raspi_mirror
         Raspberrypi apt mirror URL
-        [Default: http://archive.raspberrypi.org/debian/]
+        default: http://archive.raspberrypi.org/debian/
         type: str
 
 - ssh_rescue_pubkey
         Add this SSH key to the root user's authorized key file
-        [Default: (null)]
+        default: null
+        type: str
+
+- timezone
+        Name of the timezone for the system clock, or empty string to
+        leave timezone as is
+        default: ''
+        type: str
+
+- timezone_hwclock
+        Whether the hardware clock is in UTC or in local timezone
+        choices: [local, UTC]
+        default: null
         type: str
 
 - ubuntu_mirror
         Ubuntu apt mirror URL
-        [Default: http://archive.ubuntu.com/ubuntu/]
+        default: http://archive.ubuntu.com/ubuntu/
         type: str
 ```
 
@@ -224,45 +240,48 @@ Example Playbook
 
     - hosts: all
       roles:
-         - role: wandansible.common
-           become: true
-           vars:
-             debian_mirror: "https://mirror.fsmg.org.nz/debian/"
-             ubuntu_mirror: "https://mirror.fsmg.org.nz/ubuntu/"
+        - role: wandansible.common
+          become: true
+          vars:
+            locale: "C.UTF-8"
+            timezone: "Etc/UTC"
 
-             apt_repos:
-               - name: wand-libwandio
-                 repo: >-
-                   deb [signed-by=/etc/apt/keyrings/wand-libwandio.gpg]
-                   https://dl.cloudsmith.io/public/wand/libwandio/deb/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} main
-                 key:
-                   url: https://dl.cloudsmith.io/public/wand/libwandio/gpg.69A507877C4B94E8.key
-                   id: 54B22D514CCD2F1060E195AD69A507877C4B94E8
-                   keyring: /etc/apt/keyrings/wand-libwandio.gpg
-               - name: wand-libwandder
-                 repo: >-
-                   deb [signed-by=/etc/apt/keyrings/wand-libwandder.gpg]
-                   https://dl.cloudsmith.io/public/wand/libwandder/deb/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} main
-                 key:
-                   url: https://dl.cloudsmith.io/public/wand/libwandder/gpg.850A47EB27EE6871.key
-                   id: 9303641FB1EA5BC0E7527327850A47EB27EE6871
-                   keyring: /etc/apt/keyrings/wand-libwandder.gpg
-               - name: wand-libtrace
-                 repo: >-
-                   deb [signed-by=/etc/apt/keyrings/wand-libtrace.gpg]
-                   https://dl.cloudsmith.io/public/wand/libtrace/deb/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} main
-                 key:
-                   url: https://dl.cloudsmith.io/public/wand/libtrace/gpg.4DA49CA206D589FA.key
-                   id: 34C301C4F83705A7B73E1A2A4DA49CA206D589FA
-                   keyring: /etc/apt/keyrings/wand-libtrace.gpg
+            debian_mirror: "https://mirror.fsmg.org.nz/debian/"
+            ubuntu_mirror: "https://mirror.fsmg.org.nz/ubuntu/"
 
-             grub_cmdline:
-               - "default_hugepagesz=2M hugepagesz=2M hugepages=1024 hugepagesz=1G hugepages=4"
-               - "iommu=pt"
-               - "intel_iommu=on"
+            apt_repos:
+              - name: wand-libwandio
+                repo: >-
+                  deb [signed-by=/etc/apt/keyrings/wand-libwandio.gpg]
+                  https://dl.cloudsmith.io/public/wand/libwandio/deb/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} main
+                key:
+                  url: https://dl.cloudsmith.io/public/wand/libwandio/gpg.69A507877C4B94E8.key
+                  id: 54B22D514CCD2F1060E195AD69A507877C4B94E8
+                  keyring: /etc/apt/keyrings/wand-libwandio.gpg
+              - name: wand-libwandder
+                repo: >-
+                  deb [signed-by=/etc/apt/keyrings/wand-libwandder.gpg]
+                  https://dl.cloudsmith.io/public/wand/libwandder/deb/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} main
+                key:
+                  url: https://dl.cloudsmith.io/public/wand/libwandder/gpg.850A47EB27EE6871.key
+                  id: 9303641FB1EA5BC0E7527327850A47EB27EE6871
+                  keyring: /etc/apt/keyrings/wand-libwandder.gpg
+              - name: wand-libtrace
+                repo: >-
+                  deb [signed-by=/etc/apt/keyrings/wand-libtrace.gpg]
+                  https://dl.cloudsmith.io/public/wand/libtrace/deb/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} main
+                key:
+                  url: https://dl.cloudsmith.io/public/wand/libtrace/gpg.4DA49CA206D589FA.key
+                  id: 34C301C4F83705A7B73E1A2A4DA49CA206D589FA
+                  keyring: /etc/apt/keyrings/wand-libtrace.gpg
 
-             modprobe_modules:
-               - name: "dummy"
-                 state: "loaded"
-                 options:
-                   - "numdummies=1"
+            grub_cmdline:
+              - "default_hugepagesz=2M hugepagesz=2M hugepages=1024 hugepagesz=1G hugepages=4"
+              - "iommu=pt"
+              - "intel_iommu=on"
+
+            modprobe_modules:
+              - name: "dummy"
+                state: "loaded"
+                options:
+                  - "numdummies=1"
