@@ -11,6 +11,16 @@ packages_purge: []
 
 hostname_strategy: systemd
 
+sysctl_files:
+  - name: "kernel.panic"
+    sysctls:
+      - key: "kernel.panic"
+        value: 20
+  - name: "kernel.panic_on_oops"
+    sysctls:
+      - key: "kernel.panic_on_oops"
+        value: 1
+
 modprobe_modules: []
 modprobe_modules_load_file: "/etc/modules-load.d/ansible.conf"
 modprobe_options_config_file: "/etc/modprobe.d/zz-ansible-options.conf"

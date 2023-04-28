@@ -11,5 +11,5 @@
   when: ansible_lsb.id == "Ubuntu"
 - ansible.builtin.include_tasks: debian.yml
   when: ansible_lsb.id == "Debian"
-- ansible.builtin.import_tasks: kernel.yml
+- ansible.builtin.import_tasks: kernel/main.yml
 - ansible.builtin.import_tasks: grub.yml
