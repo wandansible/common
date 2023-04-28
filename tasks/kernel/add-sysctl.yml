@@ -1,0 +1,10 @@
+---
+- name: Configure sysctl in {{ item.name }}
+  ansible.posix.sysctl:
+    key: "{{ sysctl.key }}"
+    value: "{{ sysctl.value }}"
+    sysctl_file: "/etc/sysctl.d/{{ item.name }}.conf"
+  loop: "{{ item.sysctls }}"
+  loop_control:
+    loop_var: "sysctl"
+    label: "{{ sysctl.key }}={{ sysctl.value }}"

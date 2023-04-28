@@ -201,6 +201,33 @@ OPTIONS (= is mandatory):
         default: null
         type: str
 
+- sysctl_files
+        List of sysctl files to create
+        default: null
+        elements: dict
+        type: list
+
+        OPTIONS:
+
+        = name
+            Name of the sysctl file
+            type: str
+
+        = sysctls
+            List of sysctls to set
+            elements: dict
+            type: list
+
+            OPTIONS:
+
+            = key
+                Name of sysctl
+                type: str
+
+            = value
+                Value of sysctl
+                type: str
+
 - timezone
         Name of the timezone for the system clock, or empty string to
         leave timezone as is

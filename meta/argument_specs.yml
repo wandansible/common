@@ -90,6 +90,30 @@ argument_specs:
         type: str
         default: systemd
 
+      sysctl_files:
+        description: List of sysctl files to create
+        type: list
+        elements: dict
+        options:
+          name:
+            description: Name of the sysctl file
+            type: str
+            required: true
+          sysctls:
+            description: List of sysctls to set
+            type: list
+            elements: dict
+            required: true
+            options:
+              key:
+                description: Name of sysctl
+                type: str
+                required: true
+              value:
+                description: Value of sysctl
+                type: str
+                required: true
+
       modprobe_modules:
         description: List of kernel modules to manage
         type: list

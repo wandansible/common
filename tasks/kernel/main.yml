@@ -1,16 +1,10 @@
 ---
-
-- name: Enable reboot on kernel panic
-  ansible.posix.sysctl:
-    key: kernel.panic
-    value: '20'
-    sysctl_file: /etc/sysctl.d/kernel.panic.conf
-
-- name: Enable kernel panic on oops
-  ansible.posix.sysctl:
-    key: kernel.panic_on_oops
-    value: '1'
-    sysctl_file: /etc/sysctl.d/kernel.panic_on_oops.conf
+- name: Configure sysctl files
+  ansible.builtin.include_tasks:
+    file: "add-sysctl.yml"
+  loop: "{{ sysctl_files }}"
+  loop_control:
+    label: "{{ item.name }}"
 
 - name: Configure kernel modules to load
   ansible.builtin.template:
