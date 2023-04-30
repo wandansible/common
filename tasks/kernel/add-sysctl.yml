@@ -1,5 +1,5 @@
 ---
-- name: Configure sysctl in {{ item.name }}
+- name: Configure sysctl file {{ item.name }}
   ansible.posix.sysctl:
     key: "{{ sysctl.key }}"
     value: "{{ sysctl.value }}"
