@@ -1,0 +1,4 @@
+---
+- name: Install amd64 microcode on physical hosts with an AMD CPU
+  ansible.builtin.apt:
+    pkg: "amd64-microcode"

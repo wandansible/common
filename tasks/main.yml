@@ -25,6 +25,10 @@
   ansible.builtin.import_tasks:
     file: apt/main.yml
 
+- name: Configure hardware
+  ansible.builtin.import_tasks:
+    file: hardware/main.yml
+
 - name: Include tasks for Ubuntu
   ansible.builtin.include_tasks:
     file: ubuntu.yml
