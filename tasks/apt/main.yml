@@ -59,31 +59,6 @@
     pkg: lsb-release
     state: present
 
-- name: Install intel microcode on physical hosts with an Intel CPU
-  ansible.builtin.apt:
-    pkg: "intel-microcode"
-  when:
-    - "ansible_virtualization_role == 'host'"
-    - "ansible_processor | lower is search('intel')"
-
-- name: Install amd64 microcode on physical hosts with an AMD CPU
-  ansible.builtin.apt:
-    pkg: "amd64-microcode"
-  when:
-    - "ansible_virtualization_role == 'host'"
-    - "ansible_processor | lower is search('amd')"
-
-- name: Install NIC specific packages when required
-  ansible.builtin.apt:
-    pkg: "{{ item.package }}"
-    install_recommends: false
-  when:
-    - "item.module in loaded_nic_kmods | json_query('[*].module')"
-    - "ansible_distribution | lower in item.distributions"
-  loop: "{{ nic_packages }}"
-  loop_control:
-    label: "{{ item.module }}"
-
 - name: Add additional apt repos
   ansible.builtin.include_tasks:
     file: add-repo.yml

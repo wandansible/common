@@ -1,0 +1,18 @@
+---
+- name: Include tasks for Intel hardware
+  ansible.builtin.include_tasks:
+    file: intel.yml
+  when:
+    - "ansible_virtualization_role == 'host'"
+    - "ansible_processor | lower is search('intel')"
+
+- name: Include tasks for AMD hardware
+  ansible.builtin.include_tasks:
+    file: amd.yml
+  when:
+    - "ansible_virtualization_role == 'host'"
+    - "ansible_processor | lower is search('amd')"
+
+- name: Import network hardware tasks
+  ansible.builtin.import_tasks:
+    file: network.yml
