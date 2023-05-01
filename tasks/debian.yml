@@ -10,7 +10,7 @@
 
 - name: "Refresh apt cache when mirror changes"  # noqa no-handler
   ansible.builtin.apt:
-    update_cache: yes
+    update_cache: true
   when: _apt_enable_debian_backports.changed
 
 - name: Install needrestart from backports on debian stretch  # noqa package-latest no-handler
@@ -25,5 +25,5 @@
 - name: Install nonfree firmware on debian machines with dell hardware
   ansible.builtin.apt:
     pkg: "firmware-linux-nonfree"
-    install_recommends: no
+    install_recommends: false
   when: ansible_system_vendor | lower is search("dell")

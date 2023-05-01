@@ -3,7 +3,7 @@
 - name: Set linux cmdline default options
   ansible.builtin.lineinfile:
     dest: /etc/default/grub
-    backrefs: yes
+    backrefs: true
     regexp: '^GRUB_CMDLINE_LINUX_DEFAULT="((?!.*{{ item }}.*).*)"$'
     line: 'GRUB_CMDLINE_LINUX_DEFAULT="\1 {{ item }}"'
   loop: "{{ grub_cmdline }}"
