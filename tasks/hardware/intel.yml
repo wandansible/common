@@ -1,4 +1,6 @@
 ---
-- name: Install intel microcode on physical hosts with an Intel CPU
+- name: Install Intel specific packages on physical hosts with an Intel CPU
   ansible.builtin.apt:
-    pkg: "intel-microcode"
+    pkg:
+      - "intel-microcode"
+      - "thermald"
