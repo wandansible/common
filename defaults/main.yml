@@ -49,4 +49,6 @@ nic_packages:
       - debian
       - ubuntu
 
+cpu_scaling_governor: ""
+
 ssh_rescue_pubkey: ""

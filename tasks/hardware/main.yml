@@ -13,6 +13,13 @@
     - "ansible_virtualization_role == 'host'"
     - "ansible_processor | lower is search('amd')"
 
+- name: Include CPU governor tasks on physical hosts
+  ansible.builtin.include_tasks:
+    file: cpu-governor.yml
+  when:
+    - "ansible_virtualization_role == 'host'"
+    - cpu_scaling_governor != ""
+
 - name: Import network hardware tasks
   ansible.builtin.import_tasks:
     file: network.yml

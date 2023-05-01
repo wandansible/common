@@ -200,6 +200,18 @@ argument_specs:
             elements: str
             required: true
 
+      cpu_scaling_governor:
+        description: CPU frequency scaling governor to use, or empty string to use default
+        type: str
+        default: ""
+        choices:
+          - ondemand
+          - performance
+          - powersave
+          - conservative
+          - userspace
+          - ""
+
       ssh_rescue_pubkey:
         description: Add this SSH key to the root user's authorized key file
         type: str
