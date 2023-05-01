@@ -1,15 +1,44 @@
 ---
-- ansible.builtin.import_tasks: facts.yml
-- ansible.builtin.import_tasks: timezone.yml
+- name: Set facts
+  ansible.builtin.import_tasks:
+    file: facts.yml
+
+- name: Configure timezone
+  ansible.builtin.import_tasks:
+    file: timezone.yml
   when: timezone != ""
-- ansible.builtin.include_tasks: locale.yml
+
+- name: Configure locale
+  ansible.builtin.include_tasks:
+    file: locale.yml
   when: locale != ""
-- ansible.builtin.import_tasks: ssh.yml
-- ansible.builtin.import_tasks: dns.yml
-- ansible.builtin.import_tasks: apt/main.yml
-- ansible.builtin.include_tasks: ubuntu.yml
+
+- name: Configure SSH
+  ansible.builtin.import_tasks:
+    file: ssh.yml
+
+- name: Configure DNS
+  ansible.builtin.import_tasks:
+    file: dns.yml
+
+- name: Configure APT
+  ansible.builtin.import_tasks:
+    file: apt/main.yml
+
+- name: Include tasks for Ubuntu
+  ansible.builtin.include_tasks:
+    file: ubuntu.yml
   when: ansible_lsb.id == "Ubuntu"
-- ansible.builtin.include_tasks: debian.yml
+
+- name: Include tasks for Debian
+  ansible.builtin.include_tasks:
+    file: debian.yml
   when: ansible_lsb.id == "Debian"
-- ansible.builtin.import_tasks: kernel/main.yml
-- ansible.builtin.import_tasks: grub.yml
+
+- name: Configure linux kernel
+  ansible.builtin.import_tasks:
+    file: kernel/main.yml
+
+- name: Configure grub bootloader
+  ansible.builtin.import_tasks:
+    file: grub.yml

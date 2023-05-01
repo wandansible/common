@@ -1,11 +1,11 @@
 ---
-
 - name: Install https support for apt
   ansible.builtin.apt:
     pkg:
       - apt-transport-https
     state: present
-  when: not (ansible_distribution == "Debian" and ansible_distribution_version is version('10', '>='))
+  when: >
+    not (ansible_distribution == "Debian" and ansible_distribution_version is version('10', '>='))
 
 - name: Install gnupg on newer ubuntu/debian
   ansible.builtin.apt:
@@ -45,13 +45,13 @@
 
 - name: Refresh apt cache when mirror changes  # noqa no-handler
   ansible.builtin.apt:
-    update_cache: yes
+    update_cache: true
   when: apt_mirror.changed
 
 - name: Install needrestart
   ansible.builtin.apt:
     pkg: needrestart
-    install_recommends: no
+    install_recommends: false
     state: present
 
 - name: Install lsb-release
@@ -76,7 +76,7 @@
 - name: Install NIC specific packages when required
   ansible.builtin.apt:
     pkg: "{{ item.package }}"
-    install_recommends: no
+    install_recommends: false
   when:
     - "item.module in loaded_nic_kmods | json_query('[*].module')"
     - "ansible_distribution | lower in item.distributions"
@@ -109,5 +109,5 @@
 - name: Purge packages
   ansible.builtin.apt:
     pkg: "{{ packages_purge }}"
-    purge: yes
+    purge: true
     state: absent
