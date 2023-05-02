@@ -1,5 +1,4 @@
 ---
-
 - name: update-grub
   ansible.builtin.command:
     cmd: update-grub
@@ -11,4 +10,9 @@
 - name: restart systemd-modules-load
   ansible.builtin.service:
     name: systemd-modules-load
+    state: restarted
+
+- name: restart cpupower
+  ansible.builtin.service:
+    name: cpupower
     state: restarted

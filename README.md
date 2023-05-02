@@ -64,6 +64,13 @@ OPTIONS (= is mandatory):
             uri suite [component1] [component2] [...]
             type: str
 
+- cpu_scaling_governor
+        CPU frequency scaling governor to use, or empty string to use
+        default
+        choices: [ondemand, performance, powersave, conservative, userspace]
+        default: ''
+        type: str
+
 - debian_mirror
         Debian apt mirror URL
         default: http://deb.debian.org/debian/

@@ -1,0 +1,44 @@
+---
+- name: Install cpupower
+  ansible.builtin.apt:
+    pkg: "linux-cpupower"
+
+- name: Add cpupower defaults file
+  ansible.builtin.template:
+    src: "cpupower/default"
+    dest: "/etc/default/cpupower"
+    owner: "root"
+    group: "root"
+    mode: "u=rw,g=r,o=r"
+  notify: restart cpupower
+
+- name: Create /etc/systemd/scripts/
+  ansible.builtin.file:
+    path: "/etc/systemd/scripts/"
+    owner: "root"
+    group: "root"
+    mode: "u=rwx,g=rx,o=rx"
+    state: "directory"
+
+- name: Add cpupower systemd script
+  ansible.builtin.template:
+    src: "cpupower/cpupower"
+    dest: "/etc/systemd/scripts/cpupower"
+    owner: "root"
+    group: "root"
+    mode: "u=rwx,g=rx,o=rx"
+
+- name: Add cpupower systemd service
+  ansible.builtin.template:
+    src: "cpupower/cpupower.service"
+    dest: "/etc/systemd/system/cpupower.service"
+    owner: "root"
+    group: "root"
+    mode: "u=rw,g=r,o=r"
+
+- name: Start and enable cpupower systemd service
+  ansible.builtin.systemd:
+    name: "cpupower.service"
+    daemon_reload: true
+    enabled: true
+    state: started
