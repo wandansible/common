@@ -1,4 +1,7 @@
 ---
+- name: Gather package versions
+  ansible.builtin.package_facts:
+    manager: auto
 
 - name: Get list of loaded NIC kernel modules
   ansible.builtin.set_fact:

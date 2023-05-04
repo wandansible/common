@@ -1,4 +1,25 @@
 ---
+- name: Set grub install devices on BIOS systems
+  ansible.builtin.debconf:
+    name: "grub-pc"
+    question: "grub-pc/install_devices"
+    vtype: "multiselect"
+    value: "{{ grub_install_devices | join(', ') }}"
+  notify: install grub
+  when:
+    - grub_install_devices | length >= 1
+    - ansible_facts.packages is not search('grub-efi')
+
+- name: Set grub install devices on UEFI systems
+  ansible.builtin.debconf:
+    name: "grub-pc"
+    question: "grub-efi/install_devices"
+    vtype: "multiselect"
+    value: "{{ grub_install_devices | join(', ') }}"
+  notify: install grub-efi
+  when:
+    - grub_install_devices | length >= 1
+    - ansible_facts.packages is search('grub-efi')
 
 - name: Set linux cmdline default options
   ansible.builtin.lineinfile:

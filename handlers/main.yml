@@ -1,4 +1,13 @@
 ---
+- name: install grub
+  ansible.builtin.command:
+    cmd: dpkg-reconfigure -f noninteractive grub-pc
+
+- name: install grub-efi
+  ansible.builtin.shell:
+    cmd: >
+      dpkg-reconfigure -f noninteractive grub-efi-$(dpkg --print-architecture)
+
 - name: update-grub
   ansible.builtin.command:
     cmd: update-grub

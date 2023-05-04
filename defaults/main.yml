@@ -31,6 +31,7 @@ ubuntu_mirror: "http://archive.ubuntu.com/ubuntu/"
 raspbian_mirror: "http://raspbian.raspberrypi.org/raspbian/"
 raspi_mirror: "http://archive.raspberrypi.org/debian/"
 
+grub_install_devices: []
 grub_cmdline: []
 grub_serial_console: ""
 
