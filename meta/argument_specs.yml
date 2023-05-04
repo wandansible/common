@@ -170,6 +170,11 @@ argument_specs:
         type: str
         default: http://archive.raspberrypi.org/debian/
 
+      grub_install_devices:
+        description: List of devices to install GRUB on
+        type: list
+        elements: str
+
       grub_cmdline:
         description: GRUB commandline default options
         type: list

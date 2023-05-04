@@ -82,6 +82,12 @@ OPTIONS (= is mandatory):
         elements: str
         type: list
 
+- grub_install_devices
+        List of devices to install GRUB on
+        default: null
+        elements: str
+        type: list
+
 - grub_serial_console
         Serial options to pass to GRUB, see
         https://www.gnu.org/software/grub/manual/grub/grub.html#serial
