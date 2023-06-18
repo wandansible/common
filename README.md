@@ -175,6 +175,12 @@ OPTIONS (= is mandatory):
             Package to install
             type: str
 
+- nonfree_firmware_system_vendors
+        List of system vendors to install nonfree firmware on
+        default: [dell]
+        elements: str
+        type: list
+
 - packages_install
         List of packages to install
         default: null
