@@ -35,6 +35,9 @@ grub_install_devices: []
 grub_cmdline: []
 grub_serial_console: ""
 
+nonfree_firmware_system_vendors:
+  - dell
+
 nic_packages:
   - module: "r8169"
     package: "firmware-realtek"

@@ -22,8 +22,9 @@
     - _apt_enable_debian_backports.changed
     - ansible_distribution_release == "stretch"
 
-- name: Install nonfree firmware on debian machines with dell hardware
+- name: Install nonfree firmware for some system vendors
   ansible.builtin.apt:
     pkg: "firmware-linux-nonfree"
     install_recommends: false
-  when: ansible_system_vendor | lower is search("dell")
+  when: ansible_system_vendor.lower() is search(item.lower())
+  loop: "{{ nonfree_firmware_system_vendors }}"

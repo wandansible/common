@@ -67,7 +67,7 @@ OPTIONS (= is mandatory):
 - cpu_scaling_governor
         CPU frequency scaling governor to use, or empty string to use
         default
-        choices: [ondemand, performance, powersave, conservative, userspace]
+        choices: [ondemand, performance, powersave, conservative, userspace, '']
         default: ''
         type: str
 
@@ -174,6 +174,12 @@ OPTIONS (= is mandatory):
         = package
             Package to install
             type: str
+
+- nonfree_firmware_system_vendors
+        List of system vendors to install nonfree firmware on
+        default: [dell]
+        elements: str
+        type: list
 
 - packages_install
         List of packages to install

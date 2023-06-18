@@ -186,6 +186,13 @@ argument_specs:
           see https://www.gnu.org/software/grub/manual/grub/grub.html#serial
         type: str
 
+      nonfree_firmware_system_vendors:
+        description: List of system vendors to install nonfree firmware on
+        type: list
+        elements: str
+        default:
+          - dell
+
       nic_packages:
         description: Additional packages to install for NIC firmware support
         type: list
