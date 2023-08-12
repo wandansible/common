@@ -7,6 +7,28 @@
     group: root
     mode: u=rwx,g=rx,o=rx
 
+- name: "Configure apt.conf.d files"
+  ansible.builtin.template:
+    src: "apt/apt.conf.d"
+    dest: "/etc/apt/apt.conf.d/{{ item.name }}"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  loop: "{{ apt_conf_files }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: "Configure apt preferences.d files"
+  ansible.builtin.template:
+    src: "apt/preferences.d"
+    dest: "/etc/apt/preferences.d/{{ item.name }}"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  loop: "{{ apt_preference_files }}"
+  loop_control:
+    label: "{{ item.name }}"
+
 - name: Install https support for apt
   ansible.builtin.apt:
     pkg:

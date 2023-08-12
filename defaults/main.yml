@@ -3,6 +3,8 @@ locale: ""
 language: ""
 timezone: ""
 
+apt_conf_files: []
+apt_preference_files: []
 apt_repos: []
 packages_install: []
 packages_upgrade: []

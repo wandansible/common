@@ -25,6 +25,38 @@ ENTRY POINT: main - A collection of common tasks
 
 OPTIONS (= is mandatory):
 
+- apt_conf_files
+        List of extra apt.conf.d configuration files to create
+        default: []
+        elements: dict
+        type: list
+
+        OPTIONS:
+
+        = config
+            Contents of the apt.conf.d configuration file
+            type: str
+
+        = name
+            Name of the apt.conf.d configuration file
+            type: str
+
+- apt_preference_files
+        List of extra apt preferences.d configuration files to create
+        default: []
+        elements: dict
+        type: list
+
+        OPTIONS:
+
+        = config
+            Contents of the apt preferences.d configuration file
+            type: str
+
+        = name
+            Name of the apt preferences.d configuration file
+            type: str
+
 - apt_repos
         List of additional apt repos
         default: null

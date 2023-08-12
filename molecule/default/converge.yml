@@ -12,6 +12,11 @@
         debian_mirror: "https://mirror.fsmg.org.nz/debian/"
         ubuntu_mirror: "https://mirror.fsmg.org.nz/ubuntu/"
 
+        apt_conf_files:
+          - name: 90phased-updates
+            config: |
+              APT::Get::Always-Include-Phased-Updates "1";
+
         apt_repos:
           - name: tailscale
             repo: >-
