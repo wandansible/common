@@ -32,6 +32,36 @@ argument_specs:
           - local
           - UTC
 
+      apt_conf_files:
+        description: List of extra apt.conf.d configuration files to create
+        type: list
+        elements: dict
+        default: []
+        options:
+          name:
+            description: Name of the apt.conf.d configuration file
+            type: str
+            required: true
+          config:
+            description: Contents of the apt.conf.d configuration file
+            type: str
+            required: true
+
+      apt_preference_files:
+        description: List of extra apt preferences.d configuration files to create
+        type: list
+        elements: dict
+        default: []
+        options:
+          name:
+            description: Name of the apt preferences.d configuration file
+            type: str
+            required: true
+          config:
+            description: Contents of the apt preferences.d configuration file
+            type: str
+            required: true
+
       apt_repos:
         description: List of additional apt repos
         type: list
