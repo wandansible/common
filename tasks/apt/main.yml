@@ -1,4 +1,12 @@
 ---
+- name: "Create apt keyrings directory"
+  ansible.builtin.file:
+    path: "/etc/apt/keyrings/"
+    state: directory
+    owner: root
+    group: root
+    mode: u=rwx,g=rx,o=rx
+
 - name: Install https support for apt
   ansible.builtin.apt:
     pkg:
@@ -24,14 +32,6 @@
   when: >
     (ansible_distribution == "Debian" and ansible_distribution_version is version('9', '<')) or
     (ansible_distribution == "Ubuntu" and ansible_distribution_version is version('18.04', '<'))
-
-- name: "Create apt keyrings directory"
-  ansible.builtin.file:
-    path: "/etc/apt/keyrings/"
-    state: directory
-    owner: root
-    group: root
-    mode: u=rwx,g=rx,o=rx
 
 - name: Configure apt mirror
   ansible.builtin.template:
