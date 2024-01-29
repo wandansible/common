@@ -62,13 +62,25 @@
     owner: root
     group: root
     mode: u=rw,g=r,o=r
-  when: ansible_os_family == "Debian"
+  when:
+    - ansible_os_family == "Debian"
+    - not (ansible_distribution == "Ubuntu" and ansible_architecture not in ["x86_64", "i386"])
   register: apt_mirror
+
+- name: Configure ubuntu ports apt mirror
+  ansible.builtin.template:
+    src: "apt/sources.list.{{ ansible_lsb.id | lower }}-ports"
+    dest: /etc/apt/sources.list
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  when: ansible_distribution == "Ubuntu" and ansible_architecture not in ["x86_64", "i386"]
+  register: apt_ubuntu_ports_mirror
 
 - name: Refresh apt cache when mirror changes  # noqa no-handler
   ansible.builtin.apt:
     update_cache: true
-  when: apt_mirror.changed
+  when: apt_mirror.changed or apt_ubuntu_ports_mirror.changed
 
 - name: Install needrestart
   ansible.builtin.apt:

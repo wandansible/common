@@ -186,9 +186,14 @@ argument_specs:
         default: http://deb.debian.org/debian/
 
       ubuntu_mirror:
-        description: Ubuntu apt mirror URL
+        description: Ubuntu apt mirror URL for systems with amd64/i386 architectures
         type: str
         default: http://archive.ubuntu.com/ubuntu/
+
+      ubuntu_ports_mirror:
+        description: Ubuntu apt mirror URL for systems with non amd64/i386 architectures
+        type: str
+        default: http://ports.ubuntu.com/ubuntu-ports/
 
       raspbian_mirror:
         description: Raspbian apt mirror URL
