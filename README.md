@@ -292,8 +292,15 @@ OPTIONS (= is mandatory):
         type: str
 
 - ubuntu_mirror
-        Ubuntu apt mirror URL
+        Ubuntu apt mirror URL for systems with amd64/i386
+        architectures
         default: http://archive.ubuntu.com/ubuntu/
+        type: str
+
+- ubuntu_ports_mirror
+        Ubuntu apt mirror URL for systems with non amd64/i386
+        architectures
+        default: http://ports.ubuntu.com/ubuntu-ports/
         type: str
 ```
 

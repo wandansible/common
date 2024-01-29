@@ -30,6 +30,7 @@ modprobe_blacklist_config_file: "/etc/modprobe.d/zz-ansible-blacklist.conf"
 
 debian_mirror: "http://deb.debian.org/debian/"
 ubuntu_mirror: "http://archive.ubuntu.com/ubuntu/"
+ubuntu_ports_mirror: "http://ports.ubuntu.com/ubuntu-ports/"
 raspbian_mirror: "http://raspbian.raspberrypi.org/raspbian/"
 raspi_mirror: "http://archive.raspberrypi.org/debian/"
 
