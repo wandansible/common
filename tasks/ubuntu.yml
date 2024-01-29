@@ -1,14 +1,19 @@
 ---
+- name: Set kernel flavour fact
+  ansible.builtin.set_fact:
+    ubuntu_kernel_variant: >-
+      {{ (ansible_kernel | split("-", 2))[-1] }}
+
 - name: Check if LTS enablement package exists
   ansible.builtin.command:
-    cmd: "apt show linux-generic-hwe-{{ ansible_distribution_version }}"
+    cmd: "apt show linux-{{ ubuntu_kernel_variant }}-hwe-{{ ansible_distribution_version }}"
   changed_when: false
   failed_when: false
   register: _check_lts_package
 
 - name: Install LTS enablement stack on ubuntu
   ansible.builtin.apt:
-    pkg: "linux-generic-hwe-{{ ansible_distribution_version }}"
+    pkg: "linux-{{ ubuntu_kernel_variant }}-hwe-{{ ansible_distribution_version }}"
   when: _check_lts_package.rc == 0
 
 - name: Check for motd news config file
