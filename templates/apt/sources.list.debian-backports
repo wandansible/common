@@ -6,4 +6,4 @@
 {% endif %}
 # {{ ansible_managed }}
 
-deb {{ debian_mirror }} {{ ansible_distribution_release }}-backports main contrib {{ _non_free_component }}
+deb {{ debian_backports_mirror }} {{ ansible_distribution_release }}-backports main contrib {{ _non_free_component }}

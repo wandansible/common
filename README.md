@@ -103,6 +103,11 @@ OPTIONS (= is mandatory):
         default: ''
         type: str
 
+- debian_backports_mirror
+        Debian backports apt mirror URL
+        default: http://deb.debian.org/debian/
+        type: str
+
 - debian_mirror
         Debian apt mirror URL
         default: http://deb.debian.org/debian/
