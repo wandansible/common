@@ -29,31 +29,34 @@
   loop_control:
     label: "{{ item.name }}"
 
-- name: Install https support for apt
+- name: Install https support for apt on older debian
   ansible.builtin.apt:
     pkg:
       - apt-transport-https
     state: present
-  when: >
-    not (ansible_distribution == "Debian" and ansible_distribution_version is version('10', '>='))
-
-- name: Install gnupg on newer ubuntu/debian
-  ansible.builtin.apt:
-    pkg:
-      - gnupg
-    state: present
-  when: >
-    (ansible_distribution == "Debian" and ansible_distribution_version is version('9', '>=')) or
-    (ansible_distribution == "Ubuntu" and ansible_distribution_version is version('18.04', '>='))
+  when:
+    - ansible_distribution == "Debian"
+    - ansible_distribution_major_version | int
+    - ansible_distribution_major_version is version("9", "<=")
 
 - name: Install gnupg2 on older ubuntu/debian
   ansible.builtin.apt:
     pkg:
       - gnupg2
     state: present
-  when: >
-    (ansible_distribution == "Debian" and ansible_distribution_version is version('9', '<')) or
-    (ansible_distribution == "Ubuntu" and ansible_distribution_version is version('18.04', '<'))
+  when:
+    - ansible_distribution_major_version | int
+    - (ansible_distribution == "Debian" and ansible_distribution_major_version is version("8", "<=")) or
+      (ansible_distribution == "Ubuntu" and ansible_distribution_version is version("17.10", "<="))
+  register: _gnupg2_install
+
+- name: Install gnupg on newer ubuntu/debian
+  ansible.builtin.apt:
+    pkg:
+      - gnupg
+    state: present
+  when:
+    - _gnupg2_install is skipped
 
 - name: Configure apt mirror
   ansible.builtin.template:

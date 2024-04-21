@@ -185,6 +185,11 @@ argument_specs:
         type: str
         default: http://deb.debian.org/debian/
 
+      debian_backports_mirror:
+        description: Debian backports apt mirror URL
+        type: str
+        default: http://deb.debian.org/debian/
+
       ubuntu_mirror:
         description: Ubuntu apt mirror URL for systems with amd64/i386 architectures
         type: str

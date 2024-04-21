@@ -10,6 +10,11 @@
         timezone: "Etc/UTC"
 
         debian_mirror: "https://mirror.fsmg.org.nz/debian/"
+        debian_backports_mirror: >-
+          {{ "http://archive.debian.org/debian/"
+             if ansible_distribution == "Debian"
+            and ansible_distribution_major_version is version("10", "<=")
+            else debian_mirror }}
         ubuntu_mirror: "https://mirror.fsmg.org.nz/ubuntu/"
 
         apt_conf_files:

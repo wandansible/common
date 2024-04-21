@@ -1,13 +1,13 @@
 #jinja2: trim_blocks: "false", lstrip_blocks: "true"
-{% if ansible_distribution_version is version("11", ">=") %}
-  {% set _security_distribution = ansible_distribution_release + "-security" %}
-{% else %}
+{% if ansible_distribution_major_version | int and ansible_distribution_major_version is version("10", "<=") %}
   {% set _security_distribution = ansible_distribution_release + "/updates" %}
-{% endif %}
-{% if ansible_distribution_version is version("12", ">=") %}
-  {% set _non_free_component = "non-free-firmware" %}
 {% else %}
+  {% set _security_distribution = ansible_distribution_release + "-security" %}
+{% endif %}
+{% if ansible_distribution_major_version | int and ansible_distribution_major_version is version("11", "<=") %}
   {% set _non_free_component = "non-free" %}
+{% else %}
+  {% set _non_free_component = "non-free-firmware" %}
 {% endif %}
 # {{ ansible_managed }}
 

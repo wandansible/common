@@ -29,6 +29,7 @@ modprobe_options_config_file: "/etc/modprobe.d/zz-ansible-options.conf"
 modprobe_blacklist_config_file: "/etc/modprobe.d/zz-ansible-blacklist.conf"
 
 debian_mirror: "http://deb.debian.org/debian/"
+debian_backports_mirror: "{{ debian_mirror }}"
 ubuntu_mirror: "http://archive.ubuntu.com/ubuntu/"
 ubuntu_ports_mirror: "http://ports.ubuntu.com/ubuntu-ports/"
 raspbian_mirror: "http://raspbian.raspberrypi.org/raspbian/"
