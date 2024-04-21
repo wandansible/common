@@ -1,8 +1,8 @@
 #jinja2: trim_blocks: "false", lstrip_blocks: "true"
-{% if ansible_distribution_version is version("12", ">=") %}
-  {% set _non_free_component = "non-free-firmware" %}
-{% else %}
+{% if ansible_distribution_major_version | int and ansible_distribution_major_version is version("11", "<=") %}
   {% set _non_free_component = "non-free" %}
+{% else %}
+  {% set _non_free_component = "non-free-firmware" %}
 {% endif %}
 # {{ ansible_managed }}
 
