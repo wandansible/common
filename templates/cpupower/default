@@ -1,6 +1,8 @@
+# {{ ansible_managed }}
+
 # Define CPUs governor
 # valid governors: ondemand, performance, powersave, conservative, userspace.
-governor='{{ cpu_scaling_governor }}'
+governor="{{ cpu_scaling_governor }}"
 
 # Limit frequency range
 # Valid suffixes: Hz, kHz (default), MHz, GHz, THz
