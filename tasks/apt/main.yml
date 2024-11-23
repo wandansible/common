@@ -85,12 +85,6 @@
     update_cache: true
   when: apt_mirror.changed or apt_ubuntu_ports_mirror.changed
 
-- name: Install needrestart
-  ansible.builtin.apt:
-    pkg: needrestart
-    install_recommends: false
-    state: present
-
 - name: Install lsb-release
   ansible.builtin.apt:
     pkg: lsb-release

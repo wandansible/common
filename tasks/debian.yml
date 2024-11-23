@@ -13,15 +13,6 @@
     update_cache: true
   when: _apt_enable_debian_backports.changed
 
-- name: Install needrestart from backports on debian stretch  # noqa package-latest no-handler
-  ansible.builtin.apt:
-    pkg: needrestart
-    default_release: "{{ ansible_distribution_release }}-backports"
-    state: latest
-  when:
-    - _apt_enable_debian_backports.changed
-    - ansible_distribution_release == "stretch"
-
 - name: Install nonfree firmware for some system vendors
   ansible.builtin.apt:
     pkg: "firmware-linux-nonfree"
