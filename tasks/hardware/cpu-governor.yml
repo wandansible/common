@@ -5,7 +5,7 @@
 
 - name: Add cpupower defaults file
   ansible.builtin.template:
-    src: "cpupower/default"
+    src: "cpupower/defaults"
     dest: "/etc/default/cpupower"
     owner: "root"
     group: "root"
