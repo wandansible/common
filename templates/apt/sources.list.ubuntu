@@ -1,40 +1,55 @@
+#jinja2: trim_blocks: "false", lstrip_blocks: "true"
+{% if ansible_architecture in ["x86_64", "i386"] %}
+  {% set _ubuntu_mirror_url = ubuntu_mirror_url %}
+  {% set _ubuntu_mirror_security_url = ubuntu_mirror_security_url %}
+{% else %}
+  {% set _ubuntu_mirror_url = ubuntu_mirror_ports_url %}
+  {% set _ubuntu_mirror_security_url = ubuntu_mirror_ports_url %}
+{% endif %}
 # {{ ansible_managed }}
 
 # See http://help.ubuntu.com/community/UpgradeNotes for how to upgrade to
 # newer versions of the distribution.
-deb {{ ubuntu_mirror }} {{ ansible_distribution_release }} main restricted
-# deb-src {{ ubuntu_mirror }} {{ ansible_distribution_release }} main restricted
+{% for type in ubuntu_mirror_types %}
+{{ type }} {{ _ubuntu_mirror_url }} {{ ansible_distribution_release }} main restricted
+{% endfor %}
 
 # Major bug fix updates produced after the final release of the
 # distribution.
-deb {{ ubuntu_mirror }} {{ ansible_distribution_release }}-updates main restricted
-# deb-src {{ ubuntu_mirror }} {{ ansible_distribution_release }}-updates main restricted
+{% for type in ubuntu_mirror_types %}
+{{ type }} {{ _ubuntu_mirror_url }} {{ ansible_distribution_release }}-updates main restricted
+{% endfor %}
 
+{% if "universe" in ubuntu_mirror_components %}
 # N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu
 # team. Also, please note that software in universe WILL NOT receive any
 # review or updates from the Ubuntu security team.
-deb {{ ubuntu_mirror }} {{ ansible_distribution_release }} universe
-# deb-src {{ ubuntu_mirror }} {{ ansible_distribution_release }} universe
-deb {{ ubuntu_mirror }} {{ ansible_distribution_release }}-updates universe
-# deb-src {{ ubuntu_mirror }} {{ ansible_distribution_release }}-updates universe
+{% for type in ubuntu_mirror_types %}
+{{ type }} {{ _ubuntu_mirror_url }} {{ ansible_distribution_release }} universe
+{{ type }} {{ _ubuntu_mirror_url }} {{ ansible_distribution_release }}-updates universe
+{% endfor %}
+{% endif %}
 
+{% if "multiverse" in ubuntu_mirror_components %}
 # N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu
 # team, and may not be under a free licence. Please satisfy yourself as to
 # your rights to use the software. Also, please note that software in
 # multiverse WILL NOT receive any review or updates from the Ubuntu
 # security team.
-deb {{ ubuntu_mirror }} {{ ansible_distribution_release }} multiverse
-# deb-src {{ ubuntu_mirror }} {{ ansible_distribution_release }} multiverse
-deb {{ ubuntu_mirror }} {{ ansible_distribution_release }}-updates multiverse
-# deb-src {{ ubuntu_mirror }} {{ ansible_distribution_release }}-updates multiverse
+{% for type in ubuntu_mirror_types %}
+{{ type }} {{ _ubuntu_mirror_url }} {{ ansible_distribution_release }} multiverse
+{{ type }} {{ _ubuntu_mirror_url }} {{ ansible_distribution_release }}-updates multiverse
+{% endfor %}
+{% endif %}
 
 # N.B. software from this repository may not have been tested as
 # extensively as that contained in the main release, although it includes
 # newer versions of some applications which may provide useful features.
 # Also, please note that software in backports WILL NOT receive any review
 # or updates from the Ubuntu security team.
-deb {{ ubuntu_mirror }} {{ ansible_distribution_release }}-backports main restricted universe multiverse
-# deb-src {{ ubuntu_mirror }} {{ ansible_distribution_release }}-backports main restricted universe multiverse
+{% for type in ubuntu_mirror_types %}
+{{ type }} {{ _ubuntu_mirror_url }} {{ ansible_distribution_release }}-backports {{ ubuntu_mirror_components | join(" ") }}
+{% endfor %}
 
 # Uncomment the following two lines to add software from Canonical's
 # 'partner' repository.
@@ -43,9 +58,12 @@ deb {{ ubuntu_mirror }} {{ ansible_distribution_release }}-backports main restri
 # deb http://archive.canonical.com/ubuntu {{ ansible_distribution_release }} partner
 # deb-src http://archive.canonical.com/ubuntu {{ ansible_distribution_release }} partner
 
-deb http://security.ubuntu.com/ubuntu {{ ansible_distribution_release }}-security main restricted
-# deb-src http://security.ubuntu.com/ubuntu {{ ansible_distribution_release }}-security main restricted
-deb http://security.ubuntu.com/ubuntu {{ ansible_distribution_release }}-security universe
-# deb-src http://security.ubuntu.com/ubuntu {{ ansible_distribution_release }}-security universe
-deb http://security.ubuntu.com/ubuntu {{ ansible_distribution_release }}-security multiverse
-# deb-src http://security.ubuntu.com/ubuntu {{ ansible_distribution_release }}-security multiverse
+{% for type in ubuntu_mirror_types %}
+{{ type }} {{ _ubuntu_mirror_security_url }} {{ ansible_distribution_release }}-security main restricted
+{% if "universe" in ubuntu_mirror_components %}
+{{ type }} {{ _ubuntu_mirror_security_url }} {{ ansible_distribution_release }}-security universe
+{% endif %}
+{% if "multiverse" in ubuntu_mirror_components %}
+{{ type }} {{ _ubuntu_mirror_security_url }} {{ ansible_distribution_release }}-security multiverse
+{% endif %}
+{% endfor %}

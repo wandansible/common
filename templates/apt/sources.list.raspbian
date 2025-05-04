@@ -1,9 +1,11 @@
 # {{ ansible_managed }}
 
 # raspbian
-deb {{ raspbian_mirror }} {{ ansible_distribution_release }} main contrib non-free rpi
-deb-src {{ raspbian_mirror }} {{ ansible_distribution_release }} main contrib non-free rpi
+{% for type in raspbian_mirror_types %}
+{{ type }} {{ raspbian_mirror_url }} {{ ansible_distribution_release }} main contrib non-free rpi
+{% endfor %}
 
 # raspberry pi specific packages (kernel, firmware etc)
-deb {{ raspi_mirror }} {{ ansible_distribution_release }} main
-deb-src {{ raspi_mirror }} {{ ansible_distribution_release }} main
+{% for type in raspbian_mirror_types %}
+{{ type }} {{ raspi_mirror_url }} {{ ansible_distribution_release }} main
+{% endfor %}

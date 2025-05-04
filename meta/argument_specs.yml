@@ -63,35 +63,46 @@ argument_specs:
             required: true
 
       apt_repos:
-        description: List of additional apt repos
+        description: List of additional apt repositories
         type: list
         elements: dict
         options:
           name:
-            description: Filename for the apt sources.list file (without extension)
+            description: Name for the apt repository
             type: str
             required: true
-          repo:
+          url:
+            description: Base URL for the apt repository
+            type: str
+            required: true
+          types:
+            description: Which types of packages to look for (deb or deb-src), as string or list
+            type: raw
+          suites:
+            description: Suite(s) to use for the apt repository, as string or list
+            type: raw
+            required: true
+          components:
+            description: Component(s) to use for the apt repository, as string or list
+            type: raw
+            required: true
+          architectures:
+            description: Architecture(s) to search within repository, as string or list
+            type: raw
+          gpg_key:
             description: |
-              Repo source definition for sources.list file, in the following format:
-              deb [ option1=value1 option2=value2 ] uri suite [component1] [component2] [...]
+              Either a URL to a GPG key, absolute path to a keyring file,
+              one or more fingerprints of keys either in the trusted.gpg
+              keyring or in the keyrings in the trusted.gpg.d/ directory,
+              or an ASCII armored GPG public key block
             type: str
-            required: true
-          key:
-            description: Apt public signing key information for the repo
-            type: dict
-            required: true
-            options:
-              url:
-                description: URL for the apt key
-                type: str
-                required: true
-              id:
-                description: Apt key fingerprint
-                type: str
-              keyring:
-                description: Path for the destination GPG keyring file to add the key to
-                type: str
+          state:
+            description: State for the repo
+            type: str
+            default: present
+            choices:
+              - absent
+              - present
 
       packages_install:
         description: List of packages to install
@@ -180,35 +191,112 @@ argument_specs:
         type: str
         default: /etc/modprobe.d/zz-ansible-blacklist.conf
 
-      debian_mirror:
+      debian_mirror_url:
         description: Debian apt mirror URL
         type: str
         default: http://deb.debian.org/debian/
 
-      debian_backports_mirror:
-        description: Debian backports apt mirror URL
+      debian_mirror_security_url:
+        description: Debian security apt mirror URL
         type: str
-        default: http://deb.debian.org/debian/
+        default: http://security.debian.org/debian-security/
 
-      ubuntu_mirror:
+      debian_mirror_types:
+        description: Which types of packages to look for (deb or deb-src) on the debian apt mirror
+        type: list
+        elements: str
+        default:
+          - deb
+
+      debian_mirror_security_suite:
+        description: Suite to use for the debian security apt mirror
+        type: str
+        default: >-
+          {{
+            ansible_distribution_release + "/updates"
+            if ansible_distribution_major_version | int
+            and ansible_distribution_major_version is version("10", "<=")
+            else ansible_distribution_release + "-security"
+          }}
+
+      debian_mirror_non_free_component:
+        description: Non-free component to use for the debian apt mirror
+        type: str
+        default: >-
+          {{
+            "non-free"
+            if ansible_distribution_major_version | int
+            and ansible_distribution_major_version is version("11", "<=")
+            else "non-free-firmware"
+          }}
+
+      debian_mirror_components:
+        description: Components to use for the debian apt mirror
+        type: list
+        elements: str
+        default:
+          - main
+          - contrib
+          - "{{ debian_mirror_non_free_component }}"
+
+      debian_mirror_gpg_key:
+        description: GPG key to use for the debian apt mirror
+        type: str
+        default: /usr/share/keyrings/debian-archive-keyring.gpg
+
+      ubuntu_mirror_url:
         description: Ubuntu apt mirror URL for systems with amd64/i386 architectures
         type: str
         default: http://archive.ubuntu.com/ubuntu/
 
-      ubuntu_ports_mirror:
+      ubuntu_mirror_security_url:
+        description: Ubuntu security apt mirror URL for systems with amd64/i386 architectures
+        type: str
+        default: http://security.ubuntu.com/ubuntu/
+
+      ubuntu_mirror_ports_url:
         description: Ubuntu apt mirror URL for systems with non amd64/i386 architectures
         type: str
         default: http://ports.ubuntu.com/ubuntu-ports/
 
-      raspbian_mirror:
+      ubuntu_mirror_types:
+        description: Which types of packages to look for (deb or deb-src) on the ubuntu apt mirror
+        type: list
+        elements: str
+        default:
+          - deb
+
+      ubuntu_mirror_components:
+        description: Components to use for the ubuntu apt mirror
+        type: list
+        elements: str
+        default:
+          - main
+          - restricted
+          - universe
+          - multiverse
+
+      ubuntu_mirror_gpg_key:
+        description: GPG key to use for the ubuntu apt mirror
+        type: str
+        default: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+
+      raspbian_mirror_url:
         description: Raspbian apt mirror URL
         type: str
         default: http://raspbian.raspberrypi.org/raspbian/
 
-      raspi_mirror:
+      raspi_mirror_url:
         description: Raspberrypi apt mirror URL
         type: str
         default: http://archive.raspberrypi.org/debian/
+
+      raspbian_mirror_types:
+        description: Which types of packages to look for (deb or deb-src) on the raspbian apt mirror
+        type: list
+        elements: str
+        default:
+          - deb
 
       grub_install_devices:
         description: List of devices to install GRUB on
