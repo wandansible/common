@@ -9,13 +9,13 @@
         locale: "C.UTF-8"
         timezone: "Etc/UTC"
 
-        debian_mirror: "https://mirror.fsmg.org.nz/debian/"
-        debian_backports_mirror: >-
+        debian_mirror_url: "https://mirror.fsmg.org.nz/debian/"
+        debian_mirror_backports_url: >-
           {{ "http://archive.debian.org/debian/"
              if ansible_distribution == "Debian"
             and ansible_distribution_major_version is version("10", "<=")
-            else debian_mirror }}
-        ubuntu_mirror: "https://mirror.fsmg.org.nz/ubuntu/"
+            else debian_mirror_url }}
+        ubuntu_mirror_url: "https://mirror.fsmg.org.nz/ubuntu/"
 
         apt_conf_files:
           - name: 90phased-updates
@@ -24,13 +24,12 @@
 
         apt_repos:
           - name: tailscale
-            repo: >-
-              deb [signed-by=/etc/apt/keyrings/tailscale.gpg]
-              https://pkgs.tailscale.com/stable/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} main
-            key:
-              url: https://pkgs.tailscale.com/stable/{{ ansible_distribution | lower }}/{{ ansible_distribution_release }}.asc
-              id: 2596A99EAAB33821893C0A79458CA832957F5868
-              keyring: /etc/apt/keyrings/tailscale.gpg
+            types: deb
+            url: https://pkgs.tailscale.com/stable/{{ ansible_distribution | lower }}
+            suites: "{{ ansible_distribution_release }}"
+            components:
+              - main
+            gpg_key: "https://pkgs.tailscale.com/stable/{{ ansible_distribution | lower }}/{{ ansible_distribution_release }}.asc"
 
   environment:
     ANSIBLE_UNSAFE_WRITES: "true"

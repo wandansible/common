@@ -58,36 +58,56 @@
   when:
     - _gnupg2_install is skipped
 
+- name: Set apt deb822 fact
+  ansible.builtin.set_fact:
+    apt_deb822_sources: >-
+      {{
+        false
+        if ansible_distribution_major_version | int
+        and (
+          (ansible_distribution == "Debian" and ansible_distribution_major_version is version("12", "<="))
+          or
+          (ansible_distribution == "Ubuntu" and ansible_distribution_version is version("23.10", "<="))
+        )
+        else
+        true
+      }}
+
 - name: Configure apt mirror
   ansible.builtin.template:
-    src: "apt/sources.list.{{ ansible_lsb.id | lower }}"
-    dest: /etc/apt/sources.list
+    src: "{{ _sources_template }}"
+    dest: "{{ _sources_destination }}"
     owner: root
     group: root
     mode: u=rw,g=r,o=r
-  when:
-    - ansible_os_family == "Debian"
-    - not (ansible_distribution == "Ubuntu" and ansible_architecture not in ["x86_64", "i386"])
+  when: ansible_os_family == "Debian"
+  vars:
+    _sources_template: >-
+      {{
+        "apt/sources.list." + ansible_lsb.id | lower
+        if not apt_deb822_sources
+        else
+        "apt/" + ansible_lsb.id | lower + ".sources"
+      }}
+    _sources_destination: >-
+      {{
+        "/etc/apt/sources.list"
+        if not apt_deb822_sources
+        else
+        "/etc/apt/sources.list.d/" + ansible_lsb.id | lower + ".sources"
+      }}
   register: apt_mirror
-
-- name: Configure ubuntu ports apt mirror
-  ansible.builtin.template:
-    src: "apt/sources.list.{{ ansible_lsb.id | lower }}-ports"
-    dest: /etc/apt/sources.list
-    owner: root
-    group: root
-    mode: u=rw,g=r,o=r
-  when: ansible_distribution == "Ubuntu" and ansible_architecture not in ["x86_64", "i386"]
-  register: apt_ubuntu_ports_mirror
 
 - name: Refresh apt cache when mirror changes  # noqa no-handler
   ansible.builtin.apt:
     update_cache: true
-  when: apt_mirror.changed or apt_ubuntu_ports_mirror.changed
+  when: apt_mirror is changed
 
-- name: Install lsb-release
+- name: Install dependencies
   ansible.builtin.apt:
-    pkg: lsb-release
+    pkg:
+      - lsb-release
+      - python3-debian
     state: present
 
 - name: Add additional apt repos

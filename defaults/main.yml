@@ -28,12 +28,46 @@ modprobe_modules_load_file: "/etc/modules-load.d/ansible.conf"
 modprobe_options_config_file: "/etc/modprobe.d/zz-ansible-options.conf"
 modprobe_blacklist_config_file: "/etc/modprobe.d/zz-ansible-blacklist.conf"
 
-debian_mirror: "http://deb.debian.org/debian/"
-debian_backports_mirror: "{{ debian_mirror }}"
-ubuntu_mirror: "http://archive.ubuntu.com/ubuntu/"
-ubuntu_ports_mirror: "http://ports.ubuntu.com/ubuntu-ports/"
-raspbian_mirror: "http://raspbian.raspberrypi.org/raspbian/"
-raspi_mirror: "http://archive.raspberrypi.org/debian/"
+debian_mirror_url: "http://deb.debian.org/debian/"
+debian_mirror_security_url: "http://security.debian.org/debian-security/"
+debian_mirror_types:
+  - deb
+debian_mirror_security_suite: >-
+  {{
+    ansible_distribution_release + "/updates"
+    if ansible_distribution_major_version | int
+    and ansible_distribution_major_version is version("10", "<=")
+    else ansible_distribution_release + "-security"
+  }}
+debian_mirror_non_free_component: >-
+  {{
+    "non-free"
+    if ansible_distribution_major_version | int
+    and ansible_distribution_major_version is version("11", "<=")
+    else "non-free-firmware"
+  }}
+debian_mirror_components:
+  - main
+  - contrib
+  - "{{ debian_mirror_non_free_component }}"
+debian_mirror_gpg_key: "/usr/share/keyrings/debian-archive-keyring.gpg"
+
+ubuntu_mirror_url: "http://archive.ubuntu.com/ubuntu/"
+ubuntu_mirror_security_url: "http://security.ubuntu.com/ubuntu/"
+ubuntu_mirror_ports_url: "http://ports.ubuntu.com/ubuntu-ports/"
+ubuntu_mirror_types:
+  - deb
+ubuntu_mirror_components:
+  - main
+  - restricted
+  - universe
+  - multiverse
+ubuntu_mirror_gpg_key: "/usr/share/keyrings/ubuntu-archive-keyring.gpg"
+
+raspbian_mirror_url: "http://raspbian.raspberrypi.org/raspbian/"
+raspi_mirror_url: "http://archive.raspberrypi.org/debian/"
+raspbian_mirror_types:
+  - deb
 
 grub_install_devices: []
 grub_cmdline: []

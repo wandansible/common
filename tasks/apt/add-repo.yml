@@ -1,33 +1,17 @@
 ---
-- name: Check sources.list file exists for apt repo {{ item.name }}
-  ansible.builtin.stat:
-    path: /etc/apt/sources.list.d/{{ item.name }}.list
-  register: _check_for_apt_sources_list_file
+- name: Add apt repository {{ item.name }}
+  ansible.builtin.deb822_repository:
+    name: "{{ item.name }}"
+    types: "{{ item.types }}"
+    uris: "{{ item.url }}"
+    suites: "{{ item.suites }}"
+    components: "{{ item.components }}"
+    architectures: "{{ item.architectures | default(omit) }}"
+    signed_by: "{{ item.gpg_key | default(omit) }}"
+    state: "{{ item.state | default('present') }}"
+  register: _apt_repo
 
-- name: Remove sources.list file for apt repo if different than expected {{ item.name }}
-  when: _check_for_apt_sources_list_file.stat.exists
-  block:
-    - name: Get contents of sources.list file for apt repo {{ item.name }}
-      ansible.builtin.slurp:
-        src: /etc/apt/sources.list.d/{{ item.name }}.list
-      register: _apt_sources_list_file
-
-    - name: Remove sources.list file for apt repo {{ item.name }}
-      ansible.builtin.file:
-        path: /etc/apt/sources.list.d/{{ item.name }}.list
-        state: absent
-      when: (item.repo | trim) != (_apt_sources_list_file.content | b64decode | trim)
-
-- name: Add public gpg signing key for apt repo {{ item.name }}
-  ansible.builtin.apt_key:
-    url: "{{ item.key.url }}"
-    id: "{{ item.key.id | default(omit) }}"
-    keyring: "{{ item.key.keyring | default(omit) }}"
-    state: present
-
-- name: Add sources.list file for apt repo {{ item.name }}
-  ansible.builtin.apt_repository:
-    repo: "{{ item.repo }}"
-    filename: "{{ item.name }}"
+- name: Refresh apt cache when apt repository changes
+  ansible.builtin.apt:
     update_cache: true
-    state: present
+  when: _apt_repo is changed

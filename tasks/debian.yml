@@ -6,12 +6,13 @@
     owner: root
     group: root
     mode: u=rw,g=r,o=r
+  when: not apt_deb822_sources
   register: _apt_enable_debian_backports
 
 - name: "Refresh apt cache when mirror changes"  # noqa no-handler
   ansible.builtin.apt:
     update_cache: true
-  when: _apt_enable_debian_backports.changed
+  when: _apt_enable_debian_backports is changed
 
 - name: Install nonfree firmware for some system vendors
   ansible.builtin.apt:

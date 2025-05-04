@@ -1,9 +1,5 @@
-#jinja2: trim_blocks: "false", lstrip_blocks: "true"
-{% if ansible_distribution_major_version | int and ansible_distribution_major_version is version("11", "<=") %}
-  {% set _non_free_component = "non-free" %}
-{% else %}
-  {% set _non_free_component = "non-free-firmware" %}
-{% endif %}
 # {{ ansible_managed }}
 
-deb {{ debian_backports_mirror }} {{ ansible_distribution_release }}-backports main contrib {{ _non_free_component }}
+{% for type in debian_mirror_types %}
+{{ type }} {{ debian_mirror_url }} {{ ansible_distribution_release }}-backports {{ debian_mirror_components | join(" ") }}
+{% endfor %}

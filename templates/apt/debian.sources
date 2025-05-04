@@ -1,0 +1,13 @@
+# {{ ansible_managed }}
+
+Types: {{ debian_mirror_types | join(" ") }}
+URIs: {{ debian_mirror_url }}
+Suites: {{ ansible_distribution_release }} {{ ansible_distribution_release }}-updates {{ ansible_distribution_release }}-backports
+Components: {{ debian_mirror_components | join(" ") }}
+Signed-By: {{ debian_mirror_gpg_key }}
+
+Types: {{ debian_mirror_types | join(" ") }}
+URIs: {{ debian_mirror_security_url }}
+Suites: {{ debian_mirror_security_suite }}
+Components: {{ debian_mirror_components | join(" ") }}
+Signed-By: {{ debian_mirror_gpg_key }}

@@ -49,35 +49,46 @@ Options (= indicates it is required):
           = name            Name of the apt preferences.d configuration file
             type: str
 
-- apt_repos  List of additional apt repos
+- apt_repos  List of additional apt repositories
           default: null
           elements: dict
           type: list
           options:
 
-          = key            Apt public signing key information for the repo
-            type: dict
-            options:
+          - architectures            Architecture(s) to search within repository, as string or
+                            list
+            default: null
+            type: raw
 
-            - id              Apt key fingerprint
-              default: null
-              type: str
+          = components            Component(s) to use for the apt repository, as string or
+                         list
+            type: raw
 
-            - keyring              Path for the destination GPG keyring file to add the key
-                        to
-              default: null
-              type: str
-
-            = url              URL for the apt key
-              type: str
-
-          = name            Filename for the apt sources.list file (without extension)
+          - gpg_key            Either a URL to a GPG key, absolute path to a keyring
+                      file, one or more fingerprints of keys either in
+                      the trusted.gpg keyring or in the keyrings in
+                      the trusted.gpg.d/ directory, or an ASCII
+                      armored GPG public key block
+            default: null
             type: str
 
-          = repo            Repo source definition for sources.list file, in the
-                   following format: deb [ option1=value1
-                   option2=value2 ] uri suite [component1]
-                   [component2] [...]
+          = name            Name for the apt repository
+            type: str
+
+          - state            State for the repo
+            choices: [absent, present]
+            default: present
+            type: str
+
+          = suites            Suite(s) to use for the apt repository, as string or list
+            type: raw
+
+          - types            Which types of packages to look for (deb or deb-src), as
+                    string or list
+            default: null
+            type: raw
+
+          = url            Base URL for the apt repository
             type: str
 
 - cpu_scaling_governor  CPU frequency scaling governor to use, or empty string to use
@@ -86,11 +97,37 @@ Options (= indicates it is required):
           default: ''
           type: str
 
-- debian_backports_mirror  Debian backports apt mirror URL
-          default: http://deb.debian.org/debian/
+- debian_mirror_components  Components to use for the debian apt mirror
+          default: [main, contrib, '{{ debian_mirror_non_free_component }}']
+          elements: str
+          type: list
+
+- debian_mirror_gpg_key  GPG key to use for the debian apt mirror
+          default: /usr/share/keyrings/debian-archive-keyring.gpg
           type: str
 
-- debian_mirror  Debian apt mirror URL
+- debian_mirror_non_free_component  Non-free component to use for the debian apt mirror
+          default: "{{\n  \"non-free\"\n  if ansible_distribution_major_version | int\n  and
+            ansible_distribution_major_version is version(\"11\", \"<=\")\n  else \"non-free-firmware\"\n}}"
+          type: str
+
+- debian_mirror_security_suite  Suite to use for the debian security apt mirror
+          default: "{{\n  ansible_distribution_release + \"/updates\"\n  if ansible_distribution_major_version
+            | int\n  and ansible_distribution_major_version is version(\"10\", \"<=\")\n  else
+            ansible_distribution_release + \"-security\"\n}}"
+          type: str
+
+- debian_mirror_security_url  Debian security apt mirror URL
+          default: http://security.debian.org/debian-security/
+          type: str
+
+- debian_mirror_types  Which types of packages to look for (deb or deb-src) on the debian
+                        apt mirror
+          default: [deb]
+          elements: str
+          type: list
+
+- debian_mirror_url  Debian apt mirror URL
           default: http://deb.debian.org/debian/
           type: str
 
@@ -197,11 +234,17 @@ Options (= indicates it is required):
           elements: str
           type: list
 
-- raspbian_mirror  Raspbian apt mirror URL
+- raspbian_mirror_types  Which types of packages to look for (deb or deb-src) on the raspbian
+                          apt mirror
+          default: [deb]
+          elements: str
+          type: list
+
+- raspbian_mirror_url  Raspbian apt mirror URL
           default: http://raspbian.raspberrypi.org/raspbian/
           type: str
 
-- raspi_mirror  Raspberrypi apt mirror URL
+- raspi_mirror_url  Raspberrypi apt mirror URL
           default: http://archive.raspberrypi.org/debian/
           type: str
 
@@ -239,12 +282,32 @@ Options (= indicates it is required):
           default: null
           type: str
 
-- ubuntu_mirror  Ubuntu apt mirror URL for systems with amd64/i386 architectures
-          default: http://archive.ubuntu.com/ubuntu/
+- ubuntu_mirror_components  Components to use for the ubuntu apt mirror
+          default: [main, restricted, universe, multiverse]
+          elements: str
+          type: list
+
+- ubuntu_mirror_gpg_key  GPG key to use for the ubuntu apt mirror
+          default: /usr/share/keyrings/ubuntu-archive-keyring.gpg
           type: str
 
-- ubuntu_ports_mirror  Ubuntu apt mirror URL for systems with non amd64/i386 architectures
+- ubuntu_mirror_ports_url  Ubuntu apt mirror URL for systems with non amd64/i386 architectures
           default: http://ports.ubuntu.com/ubuntu-ports/
+          type: str
+
+- ubuntu_mirror_security_url  Ubuntu security apt mirror URL for systems with amd64/i386
+                               architectures
+          default: http://security.ubuntu.com/ubuntu/
+          type: str
+
+- ubuntu_mirror_types  Which types of packages to look for (deb or deb-src) on the ubuntu
+                        apt mirror
+          default: [deb]
+          elements: str
+          type: list
+
+- ubuntu_mirror_url  Ubuntu apt mirror URL for systems with amd64/i386 architectures
+          default: http://archive.ubuntu.com/ubuntu/
           type: str
 ```
 
