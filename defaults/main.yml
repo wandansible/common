@@ -73,6 +73,8 @@ grub_install_devices: []
 grub_cmdline: []
 grub_serial_console: ""
 
+fwupd_install: true
+
 nonfree_firmware_system_vendors:
   - dell
 

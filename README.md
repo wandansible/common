@@ -138,6 +138,10 @@ Options (= indicates it is required):
           default: http://deb.debian.org/debian/
           type: str
 
+- fwupd_install  Install fwupd
+          default: true
+          type: bool
+
 - grub_cmdline  GRUB commandline default options
           default: null
           elements: str
