@@ -9,12 +9,11 @@
         locale: "C.UTF-8"
         timezone: "Etc/UTC"
 
-        debian_mirror_url: "https://mirror.fsmg.org.nz/debian/"
-        debian_mirror_backports_url: >-
+        debian_mirror_url: >-
           {{ "http://archive.debian.org/debian/"
              if ansible_distribution == "Debian"
-            and ansible_distribution_major_version is version("10", "<=")
-            else debian_mirror_url }}
+            and ansible_distribution_major_version is version("11", "<=")
+            else "https://mirror.fsmg.org.nz/debian/" }}
         ubuntu_mirror_url: "https://mirror.fsmg.org.nz/ubuntu/"
 
         apt_conf_files:
