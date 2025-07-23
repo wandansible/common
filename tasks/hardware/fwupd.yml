@@ -1,0 +1,17 @@
+---
+- name: Get secure boot status
+  ansible.builtin.command:
+    cmd: mokutil --sb-state
+  changed_when: false
+  failed_when: false
+  register: _secure_boot_state
+
+- name: Install fwupd
+  ansible.builtin.apt:
+    pkg: "{{ fwupd_packages }}"
+    install_recommends: false
+  vars:
+    fwupd_packages: >-
+      {{ ["fwupd", "fwupd-signed"]
+         if _secure_boot_state.rc == 0 and "secureboot enabled" in _secure_boot_state.stdout.lower()
+         else ["fwupd"] }}

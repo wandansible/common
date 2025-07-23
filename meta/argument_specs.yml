@@ -340,6 +340,11 @@ argument_specs:
             elements: str
             required: true
 
+      fwupd_install:
+        description: Install fwupd
+        type: bool
+        default: true
+
       cpu_scaling_governor:
         description: CPU frequency scaling governor to use, or empty string to use default
         type: str

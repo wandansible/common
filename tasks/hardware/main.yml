@@ -13,6 +13,13 @@
     - "ansible_virtualization_role == 'host'"
     - "ansible_processor | lower is search('amd')"
 
+- name: Include fwupd tasks on physical hosts
+  ansible.builtin.include_tasks:
+    file: fwupd.yml
+  when:
+    - "ansible_virtualization_role == 'host'"
+    - "fwupd_install | bool"
+
 - name: Include CPU governor tasks on physical hosts
   ansible.builtin.include_tasks:
     file: cpu-governor.yml
