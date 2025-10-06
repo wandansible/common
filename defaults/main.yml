@@ -3,6 +3,12 @@ locale: ""
 language: ""
 timezone: ""
 
+keyboard_model: ""
+keyboard_layout: ""
+keyboard_variant: ""
+keyboard_options: ""
+keyboard_backspace: ""
+
 apt_conf_files: []
 apt_preference_files: []
 apt_repos: []

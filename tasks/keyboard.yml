@@ -1,0 +1,29 @@
+---
+- name: Check for /etc/default/keyboard
+  ansible.builtin.stat:
+    path: /etc/default/keyboard
+  register: _etc_default_keyboard
+
+- name: Set keyboard options in /etc/default/keyboard
+  ansible.builtin.lineinfile:
+    regexp: "^{{ item.name }}=(.+)$"
+    line: '{{ item.name }}="{{ item.value }}"'
+    backrefs: true
+    path: "/etc/default/keyboard"
+  loop:
+    - name: XKBMODEL
+      value: "{{ keyboard_model }}"
+    - name: XKBLAYOUT
+      value: "{{ keyboard_layout }}"
+    - name: XKBVARIANT
+      value: "{{ keyboard_variant }}"
+    - name: XKBOPTIONS
+      value: "{{ keyboard_options }}"
+    - name: BACKSPACE
+      value: "{{ keyboard_backspace }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - _etc_default_keyboard.stat.exists
+    - item.value != ""
+  notify: update-initramfs

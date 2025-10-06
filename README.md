@@ -162,6 +162,32 @@ Options (= indicates it is required):
           default: systemd
           type: str
 
+- keyboard_backspace  Configures the behavior of <BackSpace> and
+                       <Delete> keys on the console, or empty string
+                       to leave keyboard backspace behavior as is
+          default: ''
+          type: str
+
+- keyboard_layout  XKB keyboard layout name, or empty string to leave
+                    keyboard layout as is
+          default: ''
+          type: str
+
+- keyboard_model  XKB keyboard model name, or empty string to leave
+                   keyboard model as is
+          default: ''
+          type: str
+
+- keyboard_options  XKB keyboard option components, or empty string
+                     to leave keyboard options as is
+          default: ''
+          type: str
+
+- keyboard_variant  XKB keyboard variant components, or empty string
+                     to leave keyboard variant as is
+          default: ''
+          type: str
+
 - language  The value of the LANGUAGE environment variable, or empty
              string to leave LANGUAGE as is
           default: ''

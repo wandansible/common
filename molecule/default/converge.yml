@@ -9,6 +9,8 @@
         locale: "C.UTF-8"
         timezone: "Etc/UTC"
 
+        keyboard_layout: "us"
+
         debian_mirror_url: >-
           {{ "http://archive.debian.org/debian/"
              if ansible_distribution == "Debian"
