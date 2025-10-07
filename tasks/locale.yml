@@ -33,4 +33,6 @@
       line: 'LANGUAGE=\1'
     - regexp: "^LANGUAGE=(.+)$"
       line: 'LANGUAGE="{{ language }}"'
+  loop_control:
+    label: "{{ item.regexp }}"
   when: language != ""

@@ -32,6 +32,34 @@ argument_specs:
           - local
           - UTC
 
+      keyboard_model:
+        description: XKB keyboard model name, or empty string to leave keyboard model as is
+        type: str
+        default: ""
+
+      keyboard_layout:
+        description: XKB keyboard layout name, or empty string to leave keyboard layout as is
+        type: str
+        default: ""
+
+      keyboard_variant:
+        description: |
+          XKB keyboard variant components, or empty string to leave keyboard variant as is
+        type: str
+        default: ""
+
+      keyboard_options:
+        description: XKB keyboard option components, or empty string to leave keyboard options as is
+        type: str
+        default: ""
+
+      keyboard_backspace:
+        description: |
+          Configures the behavior of <BackSpace> and <Delete> keys on the console,
+          or empty string to leave keyboard backspace behavior as is
+        type: str
+        default: ""
+
       apt_conf_files:
         description: List of extra apt.conf.d configuration files to create
         type: list
@@ -214,7 +242,7 @@ argument_specs:
         default: >-
           {{
             ansible_distribution_release + "/updates"
-            if ansible_distribution_major_version | int
+            if ansible_distribution_major_version | int > 0
             and ansible_distribution_major_version is version("10", "<=")
             else ansible_distribution_release + "-security"
           }}
@@ -225,7 +253,7 @@ argument_specs:
         default: >-
           {{
             "non-free"
-            if ansible_distribution_major_version | int
+            if ansible_distribution_major_version | int > 0
             and ansible_distribution_major_version is version("11", "<=")
             else "non-free-firmware"
           }}

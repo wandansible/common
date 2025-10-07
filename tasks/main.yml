@@ -13,6 +13,10 @@
     file: locale.yml
   when: locale != ""
 
+- name: Configure keyboard
+  ansible.builtin.include_tasks:
+    file: keyboard.yml
+
 - name: Configure SSH
   ansible.builtin.import_tasks:
     file: ssh.yml

@@ -113,14 +113,14 @@ Options (= indicates it is required):
 
 - debian_mirror_non_free_component  Non-free component to use for the
                                      debian apt mirror
-          default: "{{\n  \"non-free\"\n  if ansible_distribution_major_version | int\n  and
+          default: "{{\n  \"non-free\"\n  if ansible_distribution_major_version | int > 0\n  and
             ansible_distribution_major_version is version(\"11\", \"<=\")\n  else \"non-free-firmware\"\n}}"
           type: str
 
 - debian_mirror_security_suite  Suite to use for the debian security
                                  apt mirror
           default: "{{\n  ansible_distribution_release + \"/updates\"\n  if ansible_distribution_major_version
-            | int\n  and ansible_distribution_major_version is version(\"10\", \"<=\")\n  else
+            | int > 0\n  and ansible_distribution_major_version is version(\"10\", \"<=\")\n  else
             ansible_distribution_release + \"-security\"\n}}"
           type: str
 
@@ -160,6 +160,32 @@ Options (= indicates it is required):
 - hostname_strategy  Strategy to use when updating the hostname, see
                       https://docs.ansible.com/ansible/latest/collections/ansible/builtin/hostname_module.html#parameter-use
           default: systemd
+          type: str
+
+- keyboard_backspace  Configures the behavior of <BackSpace> and
+                       <Delete> keys on the console, or empty string
+                       to leave keyboard backspace behavior as is
+          default: ''
+          type: str
+
+- keyboard_layout  XKB keyboard layout name, or empty string to leave
+                    keyboard layout as is
+          default: ''
+          type: str
+
+- keyboard_model  XKB keyboard model name, or empty string to leave
+                   keyboard model as is
+          default: ''
+          type: str
+
+- keyboard_options  XKB keyboard option components, or empty string
+                     to leave keyboard options as is
+          default: ''
+          type: str
+
+- keyboard_variant  XKB keyboard variant components, or empty string
+                     to leave keyboard variant as is
+          default: ''
           type: str
 
 - language  The value of the LANGUAGE environment variable, or empty
