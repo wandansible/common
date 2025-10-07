@@ -36,7 +36,7 @@
     state: present
   when:
     - ansible_distribution == "Debian"
-    - ansible_distribution_major_version | int
+    - ansible_distribution_major_version | int > 0
     - ansible_distribution_major_version is version("9", "<=")
 
 - name: Install gnupg2 on older ubuntu/debian
@@ -45,7 +45,7 @@
       - gnupg2
     state: present
   when:
-    - ansible_distribution_major_version | int
+    - ansible_distribution_major_version | int > 0
     - (ansible_distribution == "Debian" and ansible_distribution_major_version is version("8", "<=")) or
       (ansible_distribution == "Ubuntu" and ansible_distribution_version is version("17.10", "<="))
   register: _gnupg2_install
@@ -63,7 +63,7 @@
     apt_deb822_sources: >-
       {{
         false
-        if ansible_distribution_major_version | int
+        if ansible_distribution_major_version | int > 0
         and (
           (ansible_distribution == "Debian" and ansible_distribution_major_version is version("12", "<="))
           or

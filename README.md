@@ -113,14 +113,14 @@ Options (= indicates it is required):
 
 - debian_mirror_non_free_component  Non-free component to use for the
                                      debian apt mirror
-          default: "{{\n  \"non-free\"\n  if ansible_distribution_major_version | int\n  and
+          default: "{{\n  \"non-free\"\n  if ansible_distribution_major_version | int > 0\n  and
             ansible_distribution_major_version is version(\"11\", \"<=\")\n  else \"non-free-firmware\"\n}}"
           type: str
 
 - debian_mirror_security_suite  Suite to use for the debian security
                                  apt mirror
           default: "{{\n  ansible_distribution_release + \"/updates\"\n  if ansible_distribution_major_version
-            | int\n  and ansible_distribution_major_version is version(\"10\", \"<=\")\n  else
+            | int > 0\n  and ansible_distribution_major_version is version(\"10\", \"<=\")\n  else
             ansible_distribution_release + \"-security\"\n}}"
           type: str
 
