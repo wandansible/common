@@ -1,4 +1,4 @@
-#jinja2: trim_blocks: False, lstrip_blocks: True
+#jinja2: trim_blocks: True, lstrip_blocks: True
 {% if ansible_architecture in ["x86_64", "i386"] %}
   {% set _ubuntu_mirror_url = ubuntu_mirror_url %}
   {% set _ubuntu_mirror_security_url = ubuntu_mirror_security_url %}
