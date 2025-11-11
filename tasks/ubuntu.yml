@@ -10,6 +10,7 @@
   changed_when: false
   failed_when: false
   register: _check_lts_package
+  check_mode: false
 
 - name: Install LTS enablement stack on ubuntu
   ansible.builtin.apt:
@@ -24,8 +25,8 @@
 - name: Disable motd news on ubuntu
   ansible.builtin.lineinfile:
     dest: /etc/default/motd-news
-    regexp: '^ENABLED=1$'
-    line: 'ENABLED=0'
+    regexp: "^ENABLED=1$"
+    line: "ENABLED=0"
   when: _motd_news_config_check.stat.exists
 
 - name: Check for motd-news.timer

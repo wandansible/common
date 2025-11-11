@@ -5,6 +5,7 @@
   changed_when: false
   failed_when: false
   register: _secure_boot_state
+  check_mode: false
 
 - name: Install fwupd
   ansible.builtin.apt:
