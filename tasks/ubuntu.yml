@@ -10,6 +10,7 @@
   changed_when: false
   failed_when: false
   register: _check_lts_package
+  check_mode: false
 
 - name: Install LTS enablement stack on ubuntu
   ansible.builtin.apt:
