@@ -5,7 +5,7 @@
 
 - name: Get list of loaded NIC kernel modules
   ansible.builtin.set_fact:
-    loaded_nic_kmods: "{{ hostvars[inventory_hostname] |
+    loaded_nic_kmods: "{{ ansible_facts |
                           json_query(
                             '* | [?device && module && type == `ether`].{
                                   device: device,
