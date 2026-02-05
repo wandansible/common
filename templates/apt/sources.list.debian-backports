@@ -1,5 +1,5 @@
 # {{ ansible_managed }}
 
 {% for type in debian_mirror_types %}
-{{ type }} {{ debian_mirror_url }} {{ ansible_distribution_release }}-backports {{ debian_mirror_components | join(" ") }}
+{{ type }} {{ debian_mirror_url }} {{ ansible_facts.distribution_release }}-backports {{ debian_mirror_components | join(" ") }}
 {% endfor %}

@@ -35,9 +35,9 @@
       - apt-transport-https
     state: present
   when:
-    - ansible_distribution == "Debian"
-    - ansible_distribution_major_version | int > 0
-    - ansible_distribution_major_version is version("9", "<=")
+    - ansible_facts.distribution == "Debian"
+    - ansible_facts.distribution_major_version | int > 0
+    - ansible_facts.distribution_major_version is version("9", "<=")
 
 - name: Install gnupg2 on older ubuntu/debian
   ansible.builtin.apt:
@@ -45,9 +45,14 @@
       - gnupg2
     state: present
   when:
-    - ansible_distribution_major_version | int > 0
-    - (ansible_distribution == "Debian" and ansible_distribution_major_version is version("8", "<=")) or
-      (ansible_distribution == "Ubuntu" and ansible_distribution_version is version("17.10", "<="))
+    - ansible_facts.distribution_major_version | int > 0
+    - (
+      ansible_facts.distribution == "Debian"
+      and ansible_facts.distribution_major_version is version("8", "<=")
+      ) or (
+      ansible_facts.distribution == "Ubuntu"
+      and ansible_facts.distribution_version is version("17.10", "<=")
+      )
   register: _gnupg2_install
 
 - name: Install gnupg on newer ubuntu/debian
@@ -63,11 +68,15 @@
     apt_deb822_sources: >-
       {{
         false
-        if ansible_distribution_major_version | int > 0
+        if ansible_facts.distribution_major_version | int > 0
         and (
-          (ansible_distribution == "Debian" and ansible_distribution_major_version is version("12", "<="))
-          or
-          (ansible_distribution == "Ubuntu" and ansible_distribution_version is version("23.10", "<="))
+          (
+            ansible_facts.distribution == "Debian"
+            and ansible_facts.distribution_major_version is version("12", "<=")
+          ) or (
+            ansible_facts.distribution == "Ubuntu"
+            and ansible_facts.distribution_version is version("23.10", "<=")
+          )
         )
         else
         true
@@ -80,21 +89,21 @@
     owner: root
     group: root
     mode: u=rw,g=r,o=r
-  when: ansible_os_family == "Debian"
+  when: ansible_facts.os_family == "Debian"
   vars:
     _sources_template: >-
       {{
-        "apt/sources.list." + ansible_lsb.id | lower
+        "apt/sources.list." + ansible_facts.lsb.id | lower
         if not apt_deb822_sources
         else
-        "apt/" + ansible_lsb.id | lower + ".sources"
+        "apt/" + ansible_facts.lsb.id | lower + ".sources"
       }}
     _sources_destination: >-
       {{
         "/etc/apt/sources.list"
         if not apt_deb822_sources
         else
-        "/etc/apt/sources.list.d/" + ansible_lsb.id | lower + ".sources"
+        "/etc/apt/sources.list.d/" + ansible_facts.lsb.id | lower + ".sources"
       }}
   register: apt_mirror
 

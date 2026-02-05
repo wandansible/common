@@ -1,5 +1,5 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
-{% if ansible_architecture in ["x86_64", "i386"] %}
+{% if ansible_facts.architecture in ["x86_64", "i386"] %}
   {% set _ubuntu_mirror_url = ubuntu_mirror_url %}
   {% set _ubuntu_mirror_security_url = ubuntu_mirror_security_url %}
 {% else %}
@@ -11,13 +11,13 @@
 # See http://help.ubuntu.com/community/UpgradeNotes for how to upgrade to
 # newer versions of the distribution.
 {% for type in ubuntu_mirror_types %}
-{{ type }} {{ _ubuntu_mirror_url }} {{ ansible_distribution_release }} main restricted
+{{ type }} {{ _ubuntu_mirror_url }} {{ ansible_facts.distribution_release }} main restricted
 {% endfor %}
 
 # Major bug fix updates produced after the final release of the
 # distribution.
 {% for type in ubuntu_mirror_types %}
-{{ type }} {{ _ubuntu_mirror_url }} {{ ansible_distribution_release }}-updates main restricted
+{{ type }} {{ _ubuntu_mirror_url }} {{ ansible_facts.distribution_release }}-updates main restricted
 {% endfor %}
 
 {% if "universe" in ubuntu_mirror_components %}
@@ -25,8 +25,8 @@
 # team. Also, please note that software in universe WILL NOT receive any
 # review or updates from the Ubuntu security team.
 {% for type in ubuntu_mirror_types %}
-{{ type }} {{ _ubuntu_mirror_url }} {{ ansible_distribution_release }} universe
-{{ type }} {{ _ubuntu_mirror_url }} {{ ansible_distribution_release }}-updates universe
+{{ type }} {{ _ubuntu_mirror_url }} {{ ansible_facts.distribution_release }} universe
+{{ type }} {{ _ubuntu_mirror_url }} {{ ansible_facts.distribution_release }}-updates universe
 {% endfor %}
 {% endif %}
 
@@ -37,8 +37,8 @@
 # multiverse WILL NOT receive any review or updates from the Ubuntu
 # security team.
 {% for type in ubuntu_mirror_types %}
-{{ type }} {{ _ubuntu_mirror_url }} {{ ansible_distribution_release }} multiverse
-{{ type }} {{ _ubuntu_mirror_url }} {{ ansible_distribution_release }}-updates multiverse
+{{ type }} {{ _ubuntu_mirror_url }} {{ ansible_facts.distribution_release }} multiverse
+{{ type }} {{ _ubuntu_mirror_url }} {{ ansible_facts.distribution_release }}-updates multiverse
 {% endfor %}
 {% endif %}
 
@@ -48,22 +48,22 @@
 # Also, please note that software in backports WILL NOT receive any review
 # or updates from the Ubuntu security team.
 {% for type in ubuntu_mirror_types %}
-{{ type }} {{ _ubuntu_mirror_url }} {{ ansible_distribution_release }}-backports {{ ubuntu_mirror_components | join(" ") }}
+{{ type }} {{ _ubuntu_mirror_url }} {{ ansible_facts.distribution_release }}-backports {{ ubuntu_mirror_components | join(" ") }}
 {% endfor %}
 
 # Uncomment the following two lines to add software from Canonical's
 # 'partner' repository.
 # This software is not part of Ubuntu, but is offered by Canonical and the
 # respective vendors as a service to Ubuntu users.
-# deb http://archive.canonical.com/ubuntu {{ ansible_distribution_release }} partner
-# deb-src http://archive.canonical.com/ubuntu {{ ansible_distribution_release }} partner
+# deb http://archive.canonical.com/ubuntu {{ ansible_facts.distribution_release }} partner
+# deb-src http://archive.canonical.com/ubuntu {{ ansible_facts.distribution_release }} partner
 
 {% for type in ubuntu_mirror_types %}
-{{ type }} {{ _ubuntu_mirror_security_url }} {{ ansible_distribution_release }}-security main restricted
+{{ type }} {{ _ubuntu_mirror_security_url }} {{ ansible_facts.distribution_release }}-security main restricted
 {% if "universe" in ubuntu_mirror_components %}
-{{ type }} {{ _ubuntu_mirror_security_url }} {{ ansible_distribution_release }}-security universe
+{{ type }} {{ _ubuntu_mirror_security_url }} {{ ansible_facts.distribution_release }}-security universe
 {% endif %}
 {% if "multiverse" in ubuntu_mirror_components %}
-{{ type }} {{ _ubuntu_mirror_security_url }} {{ ansible_distribution_release }}-security multiverse
+{{ type }} {{ _ubuntu_mirror_security_url }} {{ ansible_facts.distribution_release }}-security multiverse
 {% endif %}
 {% endfor %}

@@ -36,12 +36,12 @@
 - name: Include tasks for Ubuntu
   ansible.builtin.include_tasks:
     file: ubuntu.yml
-  when: ansible_lsb.id == "Ubuntu"
+  when: ansible_facts.lsb.id == "Ubuntu"
 
 - name: Include tasks for Debian
   ansible.builtin.include_tasks:
     file: debian.yml
-  when: ansible_lsb.id == "Debian"
+  when: ansible_facts.lsb.id == "Debian"
 
 - name: Configure linux kernel
   ansible.builtin.import_tasks:
