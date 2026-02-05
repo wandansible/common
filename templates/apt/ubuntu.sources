@@ -2,12 +2,12 @@
 
 Types: {{ ubuntu_mirror_types | join(" ") }}
 URIs: {{ ubuntu_mirror_url }}
-Suites: {{ ansible_distribution_release }} {{ ansible_distribution_release }}-updates {{ ansible_distribution_release }}-backports
+Suites: {{ ansible_facts.distribution_release }} {{ ansible_facts.distribution_release }}-updates {{ ansible_facts.distribution_release }}-backports
 Components: {{ ubuntu_mirror_components | join(" ") }}
 Signed-By: {{ ubuntu_mirror_gpg_key }}
 
 Types: {{ ubuntu_mirror_types | join(" ") }}
 URIs: {{ ubuntu_mirror_security_url }}
-Suites: {{ ansible_distribution_release }}-security
+Suites: {{ ansible_facts.distribution_release }}-security
 Components: {{ ubuntu_mirror_components | join(" ") }}
 Signed-By: {{ ubuntu_mirror_gpg_key }}

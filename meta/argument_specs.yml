@@ -241,10 +241,10 @@ argument_specs:
         type: str
         default: >-
           {{
-            ansible_distribution_release + "/updates"
-            if ansible_distribution_major_version | int > 0
-            and ansible_distribution_major_version is version("10", "<=")
-            else ansible_distribution_release + "-security"
+            ansible_facts.distribution_release + "/updates"
+            if ansible_facts.distribution_major_version | int > 0
+            and ansible_facts.distribution_major_version is version("10", "<=")
+            else ansible_facts.distribution_release + "-security"
           }}
 
       debian_mirror_non_free_component:
@@ -253,8 +253,8 @@ argument_specs:
         default: >-
           {{
             "non-free"
-            if ansible_distribution_major_version | int > 0
-            and ansible_distribution_major_version is version("11", "<=")
+            if ansible_facts.distribution_major_version | int > 0
+            and ansible_facts.distribution_major_version is version("11", "<=")
             else "non-free-firmware"
           }}
 

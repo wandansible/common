@@ -2,10 +2,10 @@
 
 # raspbian
 {% for type in raspbian_mirror_types %}
-{{ type }} {{ raspbian_mirror_url }} {{ ansible_distribution_release }} main contrib non-free rpi
+{{ type }} {{ raspbian_mirror_url }} {{ ansible_facts.distribution_release }} main contrib non-free rpi
 {% endfor %}
 
 # raspberry pi specific packages (kernel, firmware etc)
 {% for type in raspbian_mirror_types %}
-{{ type }} {{ raspi_mirror_url }} {{ ansible_distribution_release }} main
+{{ type }} {{ raspi_mirror_url }} {{ ansible_facts.distribution_release }} main
 {% endfor %}

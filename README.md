@@ -113,15 +113,16 @@ Options (= indicates it is required):
 
 - debian_mirror_non_free_component  Non-free component to use for the
                                      debian apt mirror
-          default: "{{\n  \"non-free\"\n  if ansible_distribution_major_version | int > 0\n  and
-            ansible_distribution_major_version is version(\"11\", \"<=\")\n  else \"non-free-firmware\"\n}}"
+          default: "{{\n  \"non-free\"\n  if ansible_facts.distribution_major_version | int
+            > 0\n  and ansible_facts.distribution_major_version is version(\"11\", \"<=\")\n
+            \ else \"non-free-firmware\"\n}}"
           type: str
 
 - debian_mirror_security_suite  Suite to use for the debian security
                                  apt mirror
-          default: "{{\n  ansible_distribution_release + \"/updates\"\n  if ansible_distribution_major_version
-            | int > 0\n  and ansible_distribution_major_version is version(\"10\", \"<=\")\n  else
-            ansible_distribution_release + \"-security\"\n}}"
+          default: "{{\n  ansible_facts.distribution_release + \"/updates\"\n  if ansible_facts.distribution_major_version
+            | int > 0\n  and ansible_facts.distribution_major_version is version(\"10\", \"<=\")\n
+            \ else ansible_facts.distribution_release + \"-security\"\n}}"
           type: str
 
 - debian_mirror_security_url  Debian security apt mirror URL
@@ -392,7 +393,7 @@ Example Playbook
               - name: wand-libwandio
                 repo: >-
                   deb [signed-by=/etc/apt/keyrings/wand-libwandio.gpg]
-                  https://dl.cloudsmith.io/public/wand/libwandio/deb/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} main
+                  https://dl.cloudsmith.io/public/wand/libwandio/deb/{{ ansible_facts.distribution | lower }} {{ ansible_facts.distribution_release }} main
                 key:
                   url: https://dl.cloudsmith.io/public/wand/libwandio/gpg.69A507877C4B94E8.key
                   id: 54B22D514CCD2F1060E195AD69A507877C4B94E8
@@ -400,7 +401,7 @@ Example Playbook
               - name: wand-libwandder
                 repo: >-
                   deb [signed-by=/etc/apt/keyrings/wand-libwandder.gpg]
-                  https://dl.cloudsmith.io/public/wand/libwandder/deb/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} main
+                  https://dl.cloudsmith.io/public/wand/libwandder/deb/{{ ansible_facts.distribution | lower }} {{ ansible_facts.distribution_release }} main
                 key:
                   url: https://dl.cloudsmith.io/public/wand/libwandder/gpg.850A47EB27EE6871.key
                   id: 9303641FB1EA5BC0E7527327850A47EB27EE6871
@@ -408,7 +409,7 @@ Example Playbook
               - name: wand-libtrace
                 repo: >-
                   deb [signed-by=/etc/apt/keyrings/wand-libtrace.gpg]
-                  https://dl.cloudsmith.io/public/wand/libtrace/deb/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} main
+                  https://dl.cloudsmith.io/public/wand/libtrace/deb/{{ ansible_facts.distribution | lower }} {{ ansible_facts.distribution_release }} main
                 key:
                   url: https://dl.cloudsmith.io/public/wand/libtrace/gpg.4DA49CA206D589FA.key
                   id: 34C301C4F83705A7B73E1A2A4DA49CA206D589FA

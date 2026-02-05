@@ -18,5 +18,5 @@
   ansible.builtin.apt:
     pkg: "firmware-linux-nonfree"
     install_recommends: false
-  when: ansible_system_vendor.lower() is search(item.lower())
+  when: ansible_facts.system_vendor.lower() is search(item.lower())
   loop: "{{ nonfree_firmware_system_vendors }}"

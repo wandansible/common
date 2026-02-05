@@ -3,28 +3,28 @@
   ansible.builtin.include_tasks:
     file: intel.yml
   when:
-    - "ansible_virtualization_role == 'host'"
-    - "ansible_processor | lower is search('intel')"
+    - "ansible_facts.virtualization_role == 'host'"
+    - "ansible_facts.processor | lower is search('intel')"
 
 - name: Include tasks for physical AMD hardware
   ansible.builtin.include_tasks:
     file: amd.yml
   when:
-    - "ansible_virtualization_role == 'host'"
-    - "ansible_processor | lower is search('amd')"
+    - "ansible_facts.virtualization_role == 'host'"
+    - "ansible_facts.processor | lower is search('amd')"
 
 - name: Include fwupd tasks on physical hosts
   ansible.builtin.include_tasks:
     file: fwupd.yml
   when:
-    - "ansible_virtualization_role == 'host'"
+    - "ansible_facts.virtualization_role == 'host'"
     - "fwupd_install | bool"
 
 - name: Include CPU governor tasks on physical hosts
   ansible.builtin.include_tasks:
     file: cpu-governor.yml
   when:
-    - "ansible_virtualization_role == 'host'"
+    - "ansible_facts.virtualization_role == 'host'"
     - cpu_scaling_governor != ""
 
 - name: Import network hardware tasks

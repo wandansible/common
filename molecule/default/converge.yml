@@ -13,8 +13,8 @@
 
         debian_mirror_url: >-
           {{ "http://archive.debian.org/debian/"
-             if ansible_distribution == "Debian"
-            and ansible_distribution_major_version is version("11", "<=")
+             if ansible_facts.distribution == "Debian"
+            and ansible_facts.distribution_major_version is version("11", "<=")
             else "https://mirror.fsmg.org.nz/debian/" }}
         ubuntu_mirror_url: "https://mirror.fsmg.org.nz/ubuntu/"
 
@@ -26,11 +26,11 @@
         apt_repos:
           - name: tailscale
             types: deb
-            url: https://pkgs.tailscale.com/stable/{{ ansible_distribution | lower }}
-            suites: "{{ ansible_distribution_release }}"
+            url: https://pkgs.tailscale.com/stable/{{ ansible_facts.distribution | lower }}
+            suites: "{{ ansible_facts.distribution_release }}"
             components:
               - main
-            gpg_key: "https://pkgs.tailscale.com/stable/{{ ansible_distribution | lower }}/{{ ansible_distribution_release }}.asc"
+            gpg_key: "https://pkgs.tailscale.com/stable/{{ ansible_facts.distribution | lower }}/{{ ansible_facts.distribution_release }}.asc"
 
   environment:
     ANSIBLE_UNSAFE_WRITES: "true"
