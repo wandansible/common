@@ -1,0 +1,15 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description="Apt autoremove timer"
+
+[Timer]
+Unit=apt-autoremove.service
+OnCalendar={{ apt_autoremove_time }}
+{% if apt_autoremove_randomized_delay != "" %}
+RandomizedDelaySec={{ apt_autoremove_randomized_delay }}
+{% endif %}
+Persistent=true
+
+[Install]
+WantedBy=timers.target

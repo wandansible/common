@@ -1,0 +1,15 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description="Apt clean timer"
+
+[Timer]
+Unit=apt-clean.service
+OnCalendar={{ apt_clean_time }}
+{% if apt_clean_randomized_delay != "" %}
+RandomizedDelaySec={{ apt_clean_randomized_delay }}
+{% endif %}
+Persistent=true
+
+[Install]
+WantedBy=timers.target

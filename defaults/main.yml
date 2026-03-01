@@ -17,6 +17,14 @@ packages_upgrade: []
 packages_remove: []
 packages_purge: []
 
+apt_autoremove_args: ""
+apt_autoremove_time: "never"
+apt_autoremove_randomized_delay: "6h"
+
+apt_clean_type: "autoclean"
+apt_clean_time: "never"
+apt_clean_randomized_delay: "6h"
+
 hostname_strategy: systemd
 
 sysctl_files:
