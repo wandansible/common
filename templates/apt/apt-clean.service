@@ -1,0 +1,12 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description="Apt clean"
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/apt clean
+User=root
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,12 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description="Apt autoremove"
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/apt autoremove {{ apt_autoremove_args }}
+User=root
+
+[Install]
+WantedBy=multi-user.target

@@ -146,3 +146,99 @@
     pkg: "{{ packages_purge }}"
     purge: true
     state: absent
+
+- name: "Enable apt autoremove systemd timer"
+  when: apt_autoremove_time != "never"
+  block:
+    - name: Add apt autoremove service
+      ansible.builtin.template:
+        src: "apt/apt-autoremove.service"
+        dest: "/etc/systemd/system/apt-autoremove.service"
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+      register: _service_file
+
+    - name: Add apt autoremove systemd timer
+      ansible.builtin.template:
+        src: "apt/apt-autoremove.timer"
+        dest: "/etc/systemd/system/apt-autoremove.timer"
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+      register: _timer_file
+
+    - name: Start and enable apt autoremove systemd timer
+      ansible.builtin.systemd:
+        name: apt-autoremove.timer
+        daemon_reload: >-
+          {{ true if _service_file is changed or _timer_file is changed else false }}
+        state: started
+        enabled: true
+
+- name: "Disable apt autoremove systemd timer"
+  when: apt_autoremove_time == "never"
+  block:
+    - name: Remove apt autoremove service and timer
+      ansible.builtin.file:
+        path: "/etc/systemd/system/{{ item }}"
+        state: "absent"
+      loop:
+        - "apt-autoremove.service"
+        - "apt-autoremove.timer"
+      register: _remove_files
+
+    - name: Disable apt autoremove systemd timer
+      ansible.builtin.command:
+        cmd: systemctl disable apt-autoremove.timer
+      register: _systemctl_disable
+      changed_when: "'removed' in _systemctl_disable.stderr | lower"
+      when: _remove_files is changed
+
+- name: "Enable apt clean systemd timer"
+  when: apt_clean_time != "never"
+  block:
+    - name: Add apt clean service
+      ansible.builtin.template:
+        src: "apt/apt-clean.service"
+        dest: "/etc/systemd/system/apt-clean.service"
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+      register: _service_file
+
+    - name: Add apt clean systemd timer
+      ansible.builtin.template:
+        src: "apt/apt-clean.timer"
+        dest: "/etc/systemd/system/apt-clean.timer"
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+      register: _timer_file
+
+    - name: Start and enable apt clean systemd timer
+      ansible.builtin.systemd:
+        name: apt-clean.timer
+        daemon_reload: >-
+          {{ true if _service_file is changed or _timer_file is changed else false }}
+        state: started
+        enabled: true
+
+- name: "Disable apt clean systemd timer"
+  when: apt_clean_time == "never"
+  block:
+    - name: Remove apt clean service and timer
+      ansible.builtin.file:
+        path: "/etc/systemd/system/{{ item }}"
+        state: "absent"
+      loop:
+        - "apt-clean.service"
+        - "apt-clean.timer"
+      register: _remove_files
+
+    - name: Disable apt clean systemd timer
+      ansible.builtin.command:
+        cmd: systemctl disable apt-clean.timer
+      register: _systemctl_disable
+      changed_when: "'removed' in _systemctl_disable.stderr | lower"
+      when: _remove_files is changed

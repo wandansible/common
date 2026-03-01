@@ -25,6 +25,41 @@ ENTRY POINT: *main* - A collection of common tasks
 
 Options (= indicates it is required):
 
+- apt_autoremove_args  Extra arguments for apt autoremove
+          default: ''
+          type: str
+
+- apt_autoremove_randomized_delay  Delay the apt autoremove timer by
+                                    a random time up to this value or
+                                    empty string for no delay
+          default: 6h
+          type: str
+
+- apt_autoremove_time  How often to run apt autoremove, accepts a
+                        systemd time, see
+                        https://www.freedesktop.org/software/systemd/man/latest/systemd.time.html,
+                        or "never"
+          default: never
+          type: str
+
+- apt_clean_randomized_delay  Delay the apt clean timer by a random
+                               time up to this value or empty string
+                               for no delay
+          default: 6h
+          type: str
+
+- apt_clean_time  How often to run apt clean, accepts a systemd time,
+                   see
+                   https://www.freedesktop.org/software/systemd/man/latest/systemd.time.html,
+                   or "never"
+          default: never
+          type: str
+
+- apt_clean_type  Type of apt clean
+          choices: [autoclean, clean]
+          default: autoclean
+          type: str
+
 - apt_conf_files  List of extra apt.conf.d configuration files to
                    create
           default: []

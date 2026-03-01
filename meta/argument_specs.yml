@@ -152,6 +152,49 @@ argument_specs:
         type: list
         elements: str
 
+      apt_autoremove_args:
+        description: Extra arguments for apt autoremove
+        type: str
+        default: ""
+
+      apt_autoremove_time:
+        description: |
+          How often to run apt autoremove, accepts a systemd time,
+          see https://www.freedesktop.org/software/systemd/man/latest/systemd.time.html,
+          or "never"
+        type: str
+        default: "never"
+
+      apt_autoremove_randomized_delay:
+        description: |
+          Delay the apt autoremove timer by a random time up
+          to this value or empty string for no delay
+        type: str
+        default: "6h"
+
+      apt_clean_type:
+        description: Type of apt clean
+        type: str
+        choices:
+          - autoclean
+          - clean
+        default: "autoclean"
+
+      apt_clean_time:
+        description: |
+          How often to run apt clean, accepts a systemd time,
+          see https://www.freedesktop.org/software/systemd/man/latest/systemd.time.html,
+          or "never"
+        type: str
+        default: "never"
+
+      apt_clean_randomized_delay:
+        description: |
+          Delay the apt clean timer by a random time up
+          to this value or empty string for no delay
+        type: str
+        default: "6h"
+
       hostname_strategy:
         description: |
           Strategy to use when updating the hostname,
